@@ -1,7 +1,7 @@
 "use client";
 import React, { ReactNode } from "react";
 import { Layout, theme } from "antd";
-import HeaderHomePage from "./components/header/HeaderHomePage";
+import HeaderPage from "./components/header/HeaderPage";
 
 const { Content } = Layout;
 
@@ -11,13 +11,10 @@ interface Props {
 
 const HomeLayout: React.FC<Props> = (props) => {
   const { content } = props;
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
-
+  
   return (
     <div className="min-h-screen">
-      <HeaderHomePage />
+      <HeaderPage />
       {content}
     </div>
   );

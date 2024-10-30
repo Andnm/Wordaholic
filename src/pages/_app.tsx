@@ -1,4 +1,5 @@
 import "@/styles/globals.css";
+import "@/styles/header.scss";
 import "react-toastify/dist/ReactToastify.css";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
@@ -12,6 +13,7 @@ import { Provider } from "react-redux";
 import store from "@store/index";
 import { ConfigProvider } from "antd";
 import { Inter } from "next/font/google";
+import { useEffect } from "react";
 const inter = Inter({ subsets: ["latin"] });
 
 let persistor = persistStore(store);
@@ -19,6 +21,10 @@ export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps) {
+  useEffect(() => {
+    document.title = "Wordaholic";
+  }, []);
+
   return (
     <ConfigProvider
       theme={{
@@ -34,7 +40,7 @@ export default function App({
       <SessionProvider session={session}>
         <ToastContainer
           position="top-right"
-          autoClose={5000}
+          autoClose={3000}
           hideProgressBar={false}
           newestOnTop={false}
           closeOnClick={true}

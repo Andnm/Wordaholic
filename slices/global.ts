@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction, CaseReducer } from "@reduxjs/toolkit";
-import { sliderMenu } from "@utils/global";
 
 interface State {
   collapsed: boolean;
