@@ -97,7 +97,7 @@ const LoginPage = () => {
         <div className="my-5">
           <img src="/images/logo_with_line_text.png" alt="logo" />
         </div>
-        <p className="sub-title">Playing games and Study</p>
+        <p className="sub-title">Playing games and study</p>
 
         <form onSubmit={handleLoginWithEmailPassword} className="my-4 w-10/12">
           <div className="input-field relative">
@@ -144,7 +144,7 @@ const LoginPage = () => {
         </form>
 
         <p className="text-center text-register text-sm font-semibold">
-          Don't have an account?{" "}
+          Don't have an account?
           <span
             onClick={() => {
               router.push("/register");
@@ -160,7 +160,7 @@ const LoginPage = () => {
         </div>
 
         <div className="method-login-third-services grid grid-cols-3 gap-4">
-          {list_login_third_services.map((item, index) => (
+          {list_login_third_services.map((item) => (
             <div
               key={item.key}
               className="cursor-pointer item flex justify-center items-center"
