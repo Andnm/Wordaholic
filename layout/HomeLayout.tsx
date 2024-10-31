@@ -1,7 +1,7 @@
 "use client";
 import React, { ReactNode } from "react";
 import { Layout, theme } from "antd";
-import HeaderPage from "./components/header/HeaderPage";
+import HeaderAuthen from "./components/header/HeaderAuthen";
 
 const { Content } = Layout;
 
@@ -14,7 +14,7 @@ const HomeLayout: React.FC<Props> = (props) => {
   
   return (
     <div className="min-h-screen">
-      <HeaderPage />
+      <HeaderAuthen />
       {content}
     </div>
   );

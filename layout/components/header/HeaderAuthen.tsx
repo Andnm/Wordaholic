@@ -4,13 +4,13 @@ import Link from "next/link";
 
 import { usePathname, useRouter } from "next/navigation";
 
-const HeaderPage = () => {
+const HeaderAuthen = () => {
   const router = useRouter();
   const [userData, setUserData] = React.useState<any | null>(null);
   const pathName = usePathname();
 
   return (
-    <div className="container-background pt-7 background-light-green">
+    <div className="container-background pb-7">
       <div className="container relative top-0 z-10 bg-white general-header-container flex items-center justify-between rounded-lg shadow-md">
         <Link
           href="/"
@@ -18,17 +18,10 @@ const HeaderPage = () => {
         >
           <img src="/images/logo_with_line_text.png" alt="logo" />
         </Link>
-        <div className="flex items-center gap-4">
-          <button className="btn-login text-center text-lg cursor-pointer">
-            <span>Đăng ký</span>
-          </button>
-          <button className="btn-login text-center text-lg cursor-pointer">
-            <span>Đăng nhập</span>
-          </button>
-        </div>
+        <div className="flex items-center gap-4"></div>
       </div>
     </div>
   );
 };
 
-export default HeaderPage;
+export default HeaderAuthen;

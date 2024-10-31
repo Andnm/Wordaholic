@@ -10,45 +10,13 @@ export async function middleware(req: NextRequest) {
   })) as any;
 
   switch (pathname) {
-    case "/signin":
+    case "/login":
       if (token && isExpiredTimeToken(token.loginDate, token.expiresIn))
         return NextResponse.redirect(`${origin}`);
       break;
-    case "/profile":
+    case "/asd":
       if (!token || !isExpiredTimeToken(token.loginDate, token.expiresIn)) {
-        return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/signin`);
-      }
-    case "/account":
-      if (!token || !isExpiredTimeToken(token.loginDate, token.expiresIn)) {
-        return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/signin`);
-      }
-    case "/booking":
-      if (!token || !isExpiredTimeToken(token.loginDate, token.expiresIn)) {
-        return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/signin`);
-      }
-    case "/request":
-      if (!token || !isExpiredTimeToken(token.loginDate, token.expiresIn)) {
-        return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/signin`);
-      }
-    case "/support":
-      if (!token || !isExpiredTimeToken(token.loginDate, token.expiresIn)) {
-        return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/signin`);
-      }
-    case "/dashboard":
-      if (!token || !isExpiredTimeToken(token.loginDate, token.expiresIn)) {
-        return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/signin`);
-      }
-    case "/emergency":
-      if (!token || !isExpiredTimeToken(token.loginDate, token.expiresIn)) {
-        return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/signin`);
-      }
-    case "/configuration":
-      if (!token || !isExpiredTimeToken(token.loginDate, token.expiresIn)) {
-        return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/signin`);
-      }
-    case "/transaction":
-      if (!token || !isExpiredTimeToken(token.loginDate, token.expiresIn)) {
-        return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/signin`);
+        return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/login`);
       }
   }
 }

@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 import "@/styles/header.scss";
+import "@/styles/authen.scss";
 import "react-toastify/dist/ReactToastify.css";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
@@ -55,7 +56,9 @@ export default function App({
         <Provider store={store}>
           {/* <PersistGate persistor={persistor} loading={null}> */}
           <div className={inter.className}>
-            <Component {...pageProps} />
+            <div className="container-background background-light-green">
+              <Component {...pageProps} />
+            </div>
           </div>
           {/* </PersistGate> */}
         </Provider>

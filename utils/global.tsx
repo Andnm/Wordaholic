@@ -17,3 +17,4 @@ export const toastError = (error: any) => {
     toast.error(messages || error.message || "An error occurred");
   }
 };
+
