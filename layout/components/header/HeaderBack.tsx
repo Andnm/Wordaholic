@@ -1,9 +1,24 @@
-import React from 'react'
+import { useRouter } from "next/router";
+import React from "react";
+import { IoIosArrowRoundBack } from "react-icons/io";
 
-const HeaderBack = () => {
-  return (
-    <div>HeaderBack</div>
-  )
+interface Props {
+  namePage: string;
 }
 
-export default HeaderBack
+const HeaderBack: React.FC<Props> = (props) => {
+  const { namePage } = props;
+  const router = useRouter();
+
+  return (
+    <div className="px-8 py-3 grid grid-cols-3">
+      <IoIosArrowRoundBack
+        className="cursor-pointer w-10 h-10"
+        onClick={() => router.push("/")}
+      />
+      <p className="capitalize text-2xl font-bold text-center">{namePage}</p>
+    </div>
+  );
+};
+
+export default HeaderBack;

@@ -128,6 +128,17 @@ video {
   scrollbar-width: thin;
 }
 
+.plus-icon {
+  transition: 0.3s ease-in-out;
+  color: #00b4d8;
+}
+
+.plus-icon:hover {
+  transition: 0.3s ease-in-out;
+  color: #0e96b1 !important;
+}
+
+
 /* 
 .Toastify__toast-container--top-center {
   width: fit-content !important;

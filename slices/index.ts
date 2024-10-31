@@ -1,8 +1,8 @@
 import global from "@slices/global";
-import staff from "@slices/staff";
+import player from "@slices/player";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   global,
-  staff,
+  player
 };

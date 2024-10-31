@@ -61,3 +61,13 @@ export const generateFallbackAvatar = (
   const dataUrl = `data:image/svg+xml;base64,${btoa(svgString)}`;
   return dataUrl;
 };
+
+export const formatCoins = (num: number): string => {
+  if (num >= 1e9) {
+    return (num / 1e9).toFixed(1) + "B";
+  } else if (num >= 1e6) {
+    return (num / 1e6).toFixed(1) + "M";
+  } else {
+    return formatNumberWithCommas(num);
+  }
+};
