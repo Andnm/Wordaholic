@@ -47,7 +47,10 @@ const HeaderAuthen = () => {
                 className="flex flex-row items-center justify-between relative h-7 w-28 shadow-md rounded-lg"
                 style={{ backgroundColor: "#FEF7E6" }}
               >
-                <FaPlusCircle className="plus-icon absolute top-0 -left-4 w-7 h-7 cursor-pointer" />
+                <FaPlusCircle
+                  className="plus-icon absolute top-0 -left-4 w-7 h-7 cursor-pointer"
+                  onClick={() => router.push("/shop")}
+                />
                 <p className="text-center w-full text-sm font-semibold">
                   150/200
                 </p>
@@ -60,7 +63,10 @@ const HeaderAuthen = () => {
                 className="flex flex-row items-center justify-between relative h-7 w-28 shadow-md rounded-lg"
                 style={{ backgroundColor: "#FEF7E6" }}
               >
-                <FaPlusCircle className="plus-icon absolute top-0 -left-4 w-7 h-7 cursor-pointer transition-all duration-300" />
+                <FaPlusCircle
+                  className="plus-icon absolute top-0 -left-4 w-7 h-7 cursor-pointer transition-all duration-300"
+                  onClick={() => router.push("/shop")}
+                />
                 <p className="text-center w-full text-sm font-semibold">
                   {formatCoins(2000000)}
                 </p>
