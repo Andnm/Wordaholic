@@ -144,7 +144,7 @@ const LoginPage = () => {
         </form>
 
         <p className="text-center text-register text-sm font-semibold">
-          Don't have an account?
+          {`Don't have an account?`}
           <span
             onClick={() => {
               router.push("/register");
