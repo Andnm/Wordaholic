@@ -64,69 +64,61 @@ const ShopPage = () => {
   ];
 
   return (
-    <HomeLayout
-      content={
-        <>
-          <div className="container bg-white shadow-md rounded-lg">
-            <HeaderBack namePage={"shop"} />
-          </div>
+    <>
+      <HeaderBack namePage={"shop"} />
 
-          <div className="container">
-            <div className="px-8 py-3 ">
-              {shop_items.map((section, indexSection) => (
-                <div key={section.key}>
-                  <h1 className="text-center text-2xl my-4">
-                    {section.section}
-                  </h1>
+      <div className="container">
+        <div className="px-8 py-8 ">
+          {shop_items.map((section, indexSection) => (
+            <div key={section.key}>
+              <h1 className="text-center text-2xl my-4">{section.section}</h1>
 
-                  <div className="flex justify-center gap-4">
-                    {section.list_items.map((item, indexItem) => (
-                      <div
-                        key={item.key}
-                        className="bg-white shadow-md rounded-lg w-[140px] hover:scale-105 transition-all duration-200 cursor-pointer"
-                        onClick={item.action}
-                      >
-                        <div className="flex flex-col justify-center items-center pt-4">
-                          <img
-                            src={item.icon}
-                            alt={item.key}
-                            className="w-14 h-14 object-cover"
-                          />
-                          <p className="font-semibold">
-                            {section.type === "item"
-                              ? `x ${item.amount_quantity}`
-                              : `${item.amount_quantity} coin`}
+              <div className="flex justify-center gap-4">
+                {section.list_items.map((item, indexItem) => (
+                  <div
+                    key={item.key}
+                    className="bg-white shadow-md rounded-lg w-[140px] hover:scale-105 transition-all duration-200 cursor-pointer"
+                    onClick={item.action}
+                  >
+                    <div className="flex flex-col justify-center items-center pt-4">
+                      <img
+                        src={item.icon}
+                        alt={item.key}
+                        className="w-14 h-14 object-cover"
+                      />
+                      <p className="font-semibold">
+                        {section.type === "item"
+                          ? `x ${item.amount_quantity}`
+                          : `${item.amount_quantity} coin`}
+                      </p>
+                    </div>
+                    <hr />
+                    <div className="px-5 pb-3 text-center">
+                      {section.type === "item" ? (
+                        <div className="relative">
+                          <p className="text-center font-bold text-2xl">
+                            {formatNumberWithCommas(item.amount_money)}
                           </p>
+                          <img
+                            src="images/star.png"
+                            alt="coins"
+                            className="w-8 h-8 absolute bottom-0 right-0"
+                          />
                         </div>
-                        <hr />
-                        <div className="px-5 pb-3 text-center">
-                          {section.type === "item" ? (
-                            <div className="relative">
-                              <p className="text-center font-bold text-2xl">
-                                {formatNumberWithCommas(item.amount_money)}
-                              </p>
-                              <img
-                                src="images/star.png"
-                                alt="coins"
-                                className="w-8 h-8 absolute bottom-0 right-0"
-                              />
-                            </div>
-                          ) : (
-                            <p className="text-center font-bold text-xl">
-                              {formatNumberWithCommas(item.amount_money)}đ
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    ))}
+                      ) : (
+                        <p className="text-center font-bold text-xl">
+                          {formatNumberWithCommas(item.amount_money)}đ
+                        </p>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
-        </>
-      }
-    />
+          ))}
+        </div>
+      </div>
+    </>
   );
 };
 

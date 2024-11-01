@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { FaGamepad, FaStore, FaSignInAlt, FaCogs } from "react-icons/fa";
 import { handleActionNotSupport } from "@utils/global";
 import { IoSettings } from "react-icons/io5";
+import { signOut } from "next-auth/react";
 
 const HomePage: React.FC = () => {
   const router = useRouter();
@@ -33,7 +34,9 @@ const HomePage: React.FC = () => {
     {
       icon: <FaSignInAlt className="mb-1 text-3xl" />,
       name: "Logout",
-      action: () => handleActionNotSupport(),
+      action: () => {
+        signOut();
+      },
       key: "logout",
     },
   ];

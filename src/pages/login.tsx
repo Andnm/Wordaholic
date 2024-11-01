@@ -3,7 +3,7 @@
 import { ROLE_CUSTOMER } from "@utils/constants";
 import { emailRegex, isValidEmail } from "@utils/helpers";
 import { Form, message } from "antd";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
@@ -14,7 +14,6 @@ import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 const LoginPage = () => {
   const router = useRouter();
-
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -80,7 +79,7 @@ const LoginPage = () => {
     },
     {
       img_link: "/images/Google.png",
-      action: () => handleActionNotSupport(),
+      action: () => handleLoginWithGoogle(),
       key: "google",
     },
     {

@@ -1,6 +1,9 @@
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
-import { isExpiredTimeToken } from "../utils/helpers";
+import {
+  isExpiredTimeToken,
+  isExpiredTimeTokenSecondHandle,
+} from "../utils/helpers";
 
 export async function middleware(req: NextRequest) {
   const { pathname, origin } = req.nextUrl;
@@ -11,11 +14,21 @@ export async function middleware(req: NextRequest) {
 
   switch (pathname) {
     case "/login":
-      if (token && isExpiredTimeToken(token.loginDate, token.expiresIn))
+      if (
+        token 
+        //XEM LẠI BUG CHỖ NÀY SAU
+        // &&
+        // (isExpiredTimeToken(token.loginDate, token.expiresIn) ||
+        //   isExpiredTimeTokenSecondHandle(token.iat, token.exp))
+      )
         return NextResponse.redirect(`${origin}`);
       break;
-    case "/asd":
-      if (!token || !isExpiredTimeToken(token.loginDate, token.expiresIn)) {
+    case "/":
+      if (
+        !token ||
+        isExpiredTimeToken(token.loginDate, token.expiresIn) ||
+        isExpiredTimeTokenSecondHandle(token.iat, token.exp)
+      ) {
         return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/login`);
       }
   }

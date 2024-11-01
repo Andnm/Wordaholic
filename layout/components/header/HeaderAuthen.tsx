@@ -6,9 +6,11 @@ import { FaPlusCircle } from "react-icons/fa";
 import { usePathname, useRouter } from "next/navigation";
 import { Avatar } from "antd";
 import { formatCoins, generateFallbackAvatar } from "@utils/helpers";
+import { useSession } from "next-auth/react";
 
 const HeaderAuthen = () => {
   const router = useRouter();
+  const { data: session } = useSession();
   const [userData, setUserData] = React.useState<any | null>(null);
   const pathName = usePathname();
 
@@ -29,15 +31,15 @@ const HeaderAuthen = () => {
             <div style={{ display: "flex", alignItems: "center" }}>
               <Avatar
                 src={
-                  // customer.avatar_url ||
-                  generateFallbackAvatar("fullname")
+                  session?.user.image ||
+                  generateFallbackAvatar(session?.user.name!)
                 }
                 alt="fullname"
                 style={{ marginRight: "15px", border: "1px solid #d9d9d9" }}
                 size={55}
               />
               <div>
-                <p className="text-lg font-bold">fullname</p>
+                <p className="text-lg font-bold">{session?.user.name}</p>
                 {/* <p className="text-base">free</p> */}
               </div>
             </div>

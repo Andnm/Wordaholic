@@ -13,7 +13,7 @@ const HomeLayout: React.FC<Props> = (props) => {
   const { content } = props;
   
   return (
-    <div className="min-h-screen pt-5">
+    <div className="min-h-screen">
       <HeaderAuthen />
       {content}
     </div>

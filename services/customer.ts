@@ -27,8 +27,34 @@ const login = async (
   return response.data;
 };
 
+const loginWithGoogle = async (token: string): Promise<any> => {
+  const response = await httpClient.post({
+    url: `${apiLinks.customer.loginWithGoogle}`,
+    data: {
+      token: token,
+    },
+  });
+  return response.data;
+};
+
+const loginWithCustomerEmail = async (
+  email: string,
+  password: string
+): Promise<LoginResponse> => {
+  const response = await httpClient.post({
+    url: apiLinks.customer.loginWithCustomerEmail,
+    data: {
+      email: email,
+      password: password,
+    },
+  });
+  return response.data;
+};
+
 const customer = {
   login,
+  loginWithGoogle,
+  loginWithCustomerEmail
 };
 
 export default customer;

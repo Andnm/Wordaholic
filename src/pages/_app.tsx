@@ -56,7 +56,7 @@ export default function App({
         <Provider store={store}>
           {/* <PersistGate persistor={persistor} loading={null}> */}
           <div className={inter.className}>
-            <div className="container-background background-light-green">
+            <div className="container-background background-light-green min-h-screen">
               <Component {...pageProps} />
             </div>
           </div>

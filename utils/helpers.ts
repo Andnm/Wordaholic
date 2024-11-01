@@ -71,3 +71,13 @@ export const formatCoins = (num: number): string => {
     return formatNumberWithCommas(num);
   }
 };
+
+export const isExpiredTimeTokenSecondHandle = (iat: number, exp: number) => {
+  const currentTime = Math.floor(Date.now() / 1000);
+
+  if (currentTime > exp) {
+    return true;
+  } else {
+    return false;
+  }
+};

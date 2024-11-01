@@ -1,9 +1,14 @@
-import React from 'react'
+import HeaderBack from "@layout/components/header/HeaderBack";
+import React from "react";
 
 const PlayPage = () => {
   return (
-    <div>PlayPage</div>
-  )
-}
+    <>
+      <HeaderBack namePage={"Play game"} />
 
-export default PlayPage
+      <div className="container"></div>
+    </>
+  );
+};
+
+export default PlayPage;

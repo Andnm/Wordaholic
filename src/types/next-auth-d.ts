@@ -10,8 +10,8 @@ declare module "next-auth" {
       userId: string;
       expiresIn: number;
       userName: string;
-      currenNoticeCount: number;
-      roles: string[];
+      fullname: string;
+      roles: string;
     } & DefaultSession["user"];
   }
 
@@ -22,8 +22,7 @@ declare module "next-auth" {
     expiresIn: number;
     userName: string;
     loginDate: string;
-    currenNoticeCount: number;
-    roles: string[];
+    roles: string;
   }
 }
 
@@ -35,8 +34,7 @@ declare module "next-auth/jwt" {
     expiresIn: number;
     userName: string;
     loginDate: string;
-    currenNoticeCount: number;
-    roles: string[];
+    roles: string;
   }
 }
 
