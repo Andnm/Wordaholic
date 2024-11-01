@@ -2,7 +2,7 @@
 
 import HomeLayout from "@layout/HomeLayout";
 import React, { useEffect, useState } from "react";
-import InputSendMessage from "./_components/InputSendMessage";
+import InputSendMessage from "../../../components/playComponent/InputSendMessage";
 
 const Playwithbot = () => {
   const [message, setMessage] = useState<string>("");

@@ -29,8 +29,12 @@ const InputSendMessage: React.FC<Props> = (props) => {
       };
 
       recognition.onresult = (event: any) => {
-        const transcript = event.results[0][0].transcript;
-        setMessage(transcript.trim());
+        if (event.results && event.results.length > 0) {
+          const transcript = event.results[0][0].transcript;
+          setMessage(transcript.trim());
+        } else {
+          console.warn("No results found.");
+        }
       };
 
       recognition.onerror = (event: any) => {
