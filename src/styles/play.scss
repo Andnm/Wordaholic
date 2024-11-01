@@ -1,0 +1,71 @@
+.play-container {
+  height: calc(100vh - 88px - 28px);
+}
+
+.mode-container {
+  height: calc(100vh - 208px);
+}
+
+$message-bg-color: #f0f2f5;
+$input-bg-color: #ffffff;
+$button-bg-color: #007aff;
+$button-disabled-bg-color: #d3d3d3;
+$button-hover-bg-color: #005bb5;
+
+.message-input-container {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: $message-bg-color;
+  border-radius: 1.5rem;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 100vw;
+
+  .input {
+    flex: 1;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 1.5rem;
+    background-color: $input-bg-color;
+    font-size: 1rem;
+    outline: none;
+  }
+
+  .voice-button {
+    margin-left: 0.5rem;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .send-button {
+    margin-left: 0.5rem;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 50%;
+    background-color: $button-bg-color;
+    color: white;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:disabled {
+      background-color: $button-disabled-bg-color;
+      cursor: not-allowed;
+    }
+
+    &:not(:disabled):hover {
+      background-color: $button-hover-bg-color;
+    }
+  }
+}

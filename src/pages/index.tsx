@@ -4,42 +4,11 @@ import React, { useState } from "react";
 import { Modal } from "antd";
 import HomeLayout from "@layout/HomeLayout";
 import { useRouter } from "next/router";
-import { FaGamepad, FaStore, FaSignInAlt, FaCogs } from "react-icons/fa";
-import { handleActionNotSupport } from "@utils/global";
-import { IoSettings } from "react-icons/io5";
+import { handleActionNotSupport, item_list_home } from "@utils/global";
 import { signOut } from "next-auth/react";
 
 const HomePage: React.FC = () => {
   const router = useRouter();
-
-  const items_list = [
-    {
-      icon: <FaGamepad className="mb-1 text-3xl" />,
-      name: "Play",
-      action: () => router.push("/play"),
-      key: "play",
-    },
-    {
-      icon: <FaStore className="mb-1 text-3xl" />,
-      name: "Shop",
-      action: () => router.push("/shop"),
-      key: "shop",
-    },
-    {
-      icon: <IoSettings className="mb-1 text-3xl" />,
-      name: "Settings",
-      action: () => router.push("/setting"),
-      key: "settings",
-    },
-    {
-      icon: <FaSignInAlt className="mb-1 text-3xl" />,
-      name: "Logout",
-      action: () => {
-        signOut();
-      },
-      key: "logout",
-    },
-  ];
 
   return (
     <HomeLayout
@@ -50,7 +19,7 @@ const HomePage: React.FC = () => {
               Main Navigation
             </h2>
             <div className="flex items-center justify-around text-gray-600">
-              {items_list.map((item, index) => (
+              {item_list_home.map((item, index) => (
                 <div
                   key={item.key}
                   className={`${
@@ -58,7 +27,13 @@ const HomePage: React.FC = () => {
                       ? "hover:text-red-600"
                       : "hover:text-green-600"
                   } flex flex-col items-center text-gray-600 transition-all duration-200 cursor-pointer`}
-                  onClick={item.action}
+                  onClick={
+                    item?.key !== "logout"
+                      ? () => router.push(`/${item.link}`)
+                      : () => {
+                          signOut();
+                        }
+                  }
                 >
                   {item.icon}
                   <span className="text-sm">{item.name}</span>

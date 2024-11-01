@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import "@/styles/header.scss";
 import "@/styles/authen.scss";
+import "@/styles/play.scss";
 import "react-toastify/dist/ReactToastify.css";
 import "swiper/css";
 import "swiper/css/effect-coverflow";

@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction, CaseReducer } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface State {
   staminas: number;
@@ -10,21 +10,25 @@ const initialState: State = {
   coins: 0,
 };
 
-type CR<T> = CaseReducer<State, PayloadAction<T>>;
-
 const slice = createSlice({
   name: "player",
   initialState,
   reducers: {
-    updateStaminas: (state, action: PayloadAction<number>) => {
+    increaseStaminas: (state, action: PayloadAction<number>) => {
       state.staminas += action.payload;
     },
-    updateCoins: (state, action: PayloadAction<number>) => {
+    decreaseStaminas: (state, action: PayloadAction<number>) => {
+      state.staminas -= action.payload;
+    },
+    increaseCoins: (state, action: PayloadAction<number>) => {
       state.coins += action.payload;
+    },
+    decreaseCoins: (state, action: PayloadAction<number>) => {
+      state.coins -= action.payload;
     },
   },
 });
 
-export const { updateStaminas, updateCoins } = slice.actions;
+export const { increaseStaminas, decreaseStaminas, increaseCoins, decreaseCoins } = slice.actions;
 
 export default slice.reducer;
