@@ -26,9 +26,22 @@ const slice = createSlice({
     decreaseCoins: (state, action: PayloadAction<number>) => {
       state.coins -= action.payload;
     },
+    updateStaminas: (state, action: PayloadAction<number>) => {
+      state.staminas = action.payload;
+    },
+    updateCoins: (state, action: PayloadAction<number>) => {
+      state.coins = action.payload;
+    },
   },
 });
 
-export const { increaseStaminas, decreaseStaminas, increaseCoins, decreaseCoins } = slice.actions;
+export const {
+  increaseStaminas,
+  decreaseStaminas,
+  increaseCoins,
+  decreaseCoins,
+  updateStaminas,
+  updateCoins,
+} = slice.actions;
 
 export default slice.reducer;
