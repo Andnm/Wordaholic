@@ -5,6 +5,7 @@ const apiLinks = {
     loginWithCustomerEmail: `${urlServerSide}/api/auth/login`,
     loginWithGoogle: `${urlServerSide}/api/auth/loginGoogle`,
     getProfile: `${urlServerSide}/api/users/current`,
+    getUserById: `${urlServerSide}/api/users`,
   },
   room: {
     createRoom: `${urlServerSide}/api/rooms/create-room`,
@@ -16,6 +17,15 @@ const apiLinks = {
     playTurnWithPlayer: `${urlServerSide}/api/rooms/play-turn-with-player`,
     startWithBot: `${urlServerSide}/api/rooms/start-with-bot`,
     playTurnWithBot: `${urlServerSide}/api/rooms/play-turn-with-bot`,
+  },
+  transaction: {
+    createPayOsUrl: `${urlServerSide}/api/transactions/payOs-url`,
+  },
+  tool: {
+    getAllTool: `${urlServerSide}/api/tools`,
+    useHint: `${urlServerSide}/api/tools/use-hint`,
+    buyItem:  `${urlServerSide}/api/tools`,
+    buyStamina:  `${urlServerSide}/api/tools/stamina`,
   },
 };
 

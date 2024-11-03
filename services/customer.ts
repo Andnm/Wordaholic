@@ -11,6 +11,14 @@ import apiLinks from "@utils/api-links";
 import { ContentTypeEnum } from "@utils/enum";
 import httpClient from "@utils/http-client";
 
+const getUserById = async (token: string, user_id: string): Promise<any> => {
+  const response = await httpClient.get({
+    url: `${apiLinks.customer.getUserById}/${user_id}`,
+    token: token,
+  });
+  return response.data;
+};
+
 const getProfileCustomer = async (token: string): Promise<any> => {
   const response = await httpClient.get({
     url: `${apiLinks.customer.getProfile}`,
@@ -44,6 +52,7 @@ const loginWithCustomerEmail = async (
 };
 
 const customer = {
+  getUserById,
   getProfileCustomer,
   loginWithGoogle,
   loginWithCustomerEmail,

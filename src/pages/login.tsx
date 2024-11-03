@@ -153,7 +153,7 @@ const LoginPage = () => {
             style={{ color: "#FF8682" }}
             className="hover:underline cursor-pointer"
           >
-            Sign up
+            {" "}Sign up
           </span>
         </p>
         <div className="line-text font-medium my-7 ">

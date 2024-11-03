@@ -1,9 +1,6 @@
 import {
   BaseRoom,
   CreateRoomModel,
-  ParamJoinRoom,
-  ParamKickPlayer,
-  ParamLeaveRoom,
   UpdatePlayerTurn,
   UpdatePlayBotTurn,
 } from "@models/room";
@@ -23,35 +20,34 @@ const createRoom = async (
   return response.data;
 };
 
-const joinRoom = async (token: string, params: ParamJoinRoom): Promise<any> => {
+const joinRoom = async (
+  token: string,
+  room_id: string,
+  invite_code: string
+): Promise<any> => {
   const response = await httpClient.get({
-    url: `${apiLinks.room.joinRoom}`,
+    url: `${apiLinks.room.joinRoom}/${room_id}/${invite_code}`,
     token: token,
-    params: params,
   });
   return response.data;
 };
 
-const leaveRoom = async (
-  token: string,
-  params: ParamLeaveRoom
-): Promise<any> => {
+const leaveRoom = async (token: string, room_id: string): Promise<any> => {
   const response = await httpClient.get({
-    url: `${apiLinks.room.joinRoom}`,
+    url: `${apiLinks.room.leaveRoom}/${room_id}`,
     token: token,
-    params: params,
   });
   return response.data;
 };
 
 const kickPlayer = async (
   token: string,
-  params: ParamKickPlayer
+  room_id: string,
+  user_id: string
 ): Promise<any> => {
   const response = await httpClient.get({
-    url: `${apiLinks.room.kickPlayer}`,
+    url: `${apiLinks.room.kickPlayer}/${room_id}/${user_id}`,
     token: token,
-    params: params,
   });
   return response.data;
 };

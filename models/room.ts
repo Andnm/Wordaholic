@@ -8,16 +8,6 @@ export interface CreateRoomModel {
   coin_per_person: number;
 }
 
-export interface ParamJoinRoom extends BaseRoom {
-  invite_code: string;
-}
-
-export interface ParamLeaveRoom extends BaseRoom {}
-
-export interface ParamKickPlayer extends BaseRoom {
-  user_id: string;
-}
-
 export interface UpdatePlayerTurn extends BaseRoom {
   word: string;
 }
@@ -25,4 +15,23 @@ export interface UpdatePlayerTurn extends BaseRoom {
 export interface UpdatePlayBotTurn {
   usedWords: string[];
   word: string;
+}
+
+export interface RoomType {
+  host_id: string;
+  player_list: PlayerList[];
+  invite_code: string;
+  max_players: number;
+  is_private: boolean;
+  is_playing: boolean;
+  coin_per_person: number;
+  leaderboard: any[];
+  usedWords: string[];
+  _id: string;
+  players_in_match: any[];
+}
+
+export interface PlayerList {
+  user_id: string;
+  is_ready: boolean;
 }

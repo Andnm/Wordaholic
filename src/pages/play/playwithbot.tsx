@@ -84,8 +84,6 @@ const Playwithbot = () => {
     }
   };
 
-
-
   useEffect(() => {
     if (gameActive && countdown > 0) {
       const timer = setInterval(() => {

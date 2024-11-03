@@ -96,7 +96,7 @@ const RegisterPage = () => {
     },
     {
       img_link: "/images/Google.png",
-      action: () => handleActionNotSupport(),
+      action: () => handleLoginWithGoogle(),
       key: "google",
     },
     {
@@ -111,10 +111,7 @@ const RegisterPage = () => {
       <div className="container login-container register-container  flex flex-col items-center justify-center">
         <h1 className="text-center text-4xl font-extrabold">wordaholic</h1>
         <div className="my-5 logo-container">
-          <img
-            src="/images/logo_with_line_text.png"
-            alt="logo"
-          />
+          <img src="/images/logo_with_line_text.png" alt="logo" />
         </div>
         <p className="sub-title">Register</p>
 
