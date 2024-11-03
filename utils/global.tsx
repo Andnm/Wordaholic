@@ -35,9 +35,9 @@ export const item_list_home = [
 export const play_mode_list = [
   {
     name: "multiplayer",
-    link: "/multiplayer",
+    link: "multiplayer",
   },
-  { name: "play with bot", link: "/playwithbot" },
+  { name: "play with bot", link: "playwithbot" },
 ];
 
 export const handleActionNotSupport = () => {
@@ -45,7 +45,7 @@ export const handleActionNotSupport = () => {
 };
 
 export const toastError = (error: any) => {
-  const messages = error?.response?.data?.message;
+  const messages = error?.response?.data || error?.response?.data?.message;
 
   if (Array.isArray(messages)) {
     const combinedMessage = messages.join("\n");

@@ -22,7 +22,7 @@ export interface UpdatePlayerTurn extends BaseRoom {
   word: string;
 }
 
-export interface UpdatePlayBotTurn extends BaseRoom {
+export interface UpdatePlayBotTurn {
   usedWords: string[];
   word: string;
 }

@@ -83,6 +83,11 @@
   transition: 0.3s ease-in-out;
 }
 
+.loading-style {
+  background-color: gray; 
+  cursor: not-allowed;  
+}
+
 .line-text {
   width: 100%;
   display: flex;

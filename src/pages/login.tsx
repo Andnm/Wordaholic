@@ -130,7 +130,10 @@ const LoginPage = () => {
 
           <button
             type="submit"
-            className="my-5 btn-action-login-register text-center text-xl cursor-pointer"
+            className={`my-5 btn-action-login-register text-center text-xl cursor-pointer ${
+              isLoading ? "loading-style" : ""
+            }`}
+            aria-disabled={isLoading}
             disabled={isLoading}
           >
             {isLoading ? "Loading..." : "Log in"}
