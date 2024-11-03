@@ -1,14 +1,37 @@
 "use client";
 import dynamic from "next/dynamic";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal } from "antd";
 import HomeLayout from "@layout/HomeLayout";
 import { useRouter } from "next/router";
 import { handleActionNotSupport, item_list_home } from "@utils/global";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
+import useDispatch from "@hooks/use-dispatch";
+import customer from "@services/customer";
+import { updateCoins, updateStaminas } from "@slices/player";
 
 const HomePage: React.FC = () => {
   const router = useRouter();
+  const { data: session } = useSession();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchCustomerProfile = async () => {
+      if (session?.user.access_token) {
+        try {
+          const resultCustomer = await customer.getProfileCustomer(
+            session.user.access_token
+          );
+          dispatch(updateCoins(resultCustomer.coins));
+          dispatch(updateStaminas(resultCustomer.stamina));
+        } catch (error) {
+          console.error("Failed to fetch customer profile:", error);
+        }
+      }
+    };
+
+    fetchCustomerProfile();
+  }, [session?.user.access_token]);
 
   return (
     <HomeLayout

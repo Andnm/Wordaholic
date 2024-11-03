@@ -6,23 +6,15 @@ import {
   CusParam,
   ChangePassword,
 } from "@models/customer";
-import {
-  LoginResponse,
-} from "@models/user";
+import { LoginResponse } from "@models/user";
 import apiLinks from "@utils/api-links";
 import { ContentTypeEnum } from "@utils/enum";
 import httpClient from "@utils/http-client";
 
-const login = async (
-  email: string,
-  password: string
-): Promise<LoginResponse> => {
-  const response = await httpClient.post({
-    url: apiLinks.customer.login,
-    data: {
-      email: email,
-      password: password,
-    },
+const getProfileCustomer = async (token: string): Promise<any> => {
+  const response = await httpClient.get({
+    url: `${apiLinks.customer.getProfile}`,
+    token: token,
   });
   return response.data;
 };
@@ -52,9 +44,9 @@ const loginWithCustomerEmail = async (
 };
 
 const customer = {
-  login,
+  getProfileCustomer,
   loginWithGoogle,
-  loginWithCustomerEmail
+  loginWithCustomerEmail,
 };
 
 export default customer;

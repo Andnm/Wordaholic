@@ -6,11 +6,6 @@ import customer from "@services/customer";
 import { jwtDecode } from "jwt-decode";
 import { ROLE_ADMIN, ROLE_CUSTOMER } from "@utils/constants";
 
-interface DecodedToken {
-  fullname: string;
-  email: string;
-  role_name: string;
-}
 
 export default NextAuth({
   providers: [
@@ -31,20 +26,22 @@ export default NextAuth({
         var result;
 
         result = await customer.loginWithCustomerEmail(email, password);
-
         if (result) {
-          const decodedToken = jwtDecode<DecodedToken>(result.accessToken);
+          const decodedToken = jwtDecode<any>(result.accessToken);
+          console.log("decodedToken: ", decodedToken);
+
           const user = {
             id: result.userId,
-            name: decodedToken.fullname,
+            name: decodedToken?.user?.fullname,
             access_token: result.accessToken,
             expiresIn: result.expiresIn,
             loginDate: moment().format(),
             userId: result.userId,
             userName: result.userName,
             tokenType: result.tokenType,
-            email: decodedToken.email,
-            roles: decodedToken.role_name,
+            email: decodedToken?.user.email,
+            roles: decodedToken?.user?.roleName,
+            image: decodedToken?.user?.avatar,
           } as User;
           return user;
         } else {

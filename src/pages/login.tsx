@@ -55,14 +55,13 @@ const LoginPage = () => {
         redirect: false,
         email: email,
         password: password,
-        role: ROLE_CUSTOMER,
       });
 
       if (response?.error) {
         return message.error("Wrong login information!", 1.5);
       } else {
         message.success("Đăng nhập thành công!", 1.5);
-        return router.push("/account");
+        return router.push("/");
       }
     } catch (error) {
       setError("An error occurred during login.");

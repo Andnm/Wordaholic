@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { FaPlusCircle } from "react-icons/fa";
 
@@ -7,12 +7,22 @@ import { usePathname, useRouter } from "next/navigation";
 import { Avatar } from "antd";
 import { formatCoins, generateFallbackAvatar } from "@utils/helpers";
 import { useSession } from "next-auth/react";
+import customer from "@services/customer";
+import useDispatch from "@hooks/use-dispatch";
+import { updateCoins, updateStaminas } from "@slices/player";
+import useSelector from "@hooks/use-selector";
 
 const HeaderAuthen = () => {
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  const coins = useSelector((state) => state.player.coins);
+  const staminas = useSelector((state) => state.player.staminas);
+
   const [userData, setUserData] = React.useState<any | null>(null);
-  const pathName = usePathname();
+
+  if (status !== "authenticated" || coins == null || staminas == null) {
+    return null;
+  }
 
   return (
     <div className="container-background pb-7">
@@ -20,7 +30,7 @@ const HeaderAuthen = () => {
         <div className="p-8">
           <div className="">
             <h1
-              className="text-2xl uppercase font-extrabold"
+              className="text-2xl uppercase font-extrabold cursor-pointer"
               onClick={() => router.push("/")}
             >
               wordaholic
@@ -32,14 +42,16 @@ const HeaderAuthen = () => {
               <Avatar
                 src={
                   session?.user.image ||
-                  generateFallbackAvatar(session?.user.name!)
+                  generateFallbackAvatar(session?.user.email!)
                 }
                 alt="fullname"
                 style={{ marginRight: "15px", border: "1px solid #d9d9d9" }}
                 size={55}
               />
               <div>
-                <p className="text-lg font-bold">{session?.user.name}</p>
+                <p className="text-lg font-bold">
+                  {session?.user.name || session?.user.email}
+                </p>
                 {/* <p className="text-base">free</p> */}
               </div>
             </div>
@@ -54,7 +66,7 @@ const HeaderAuthen = () => {
                   onClick={() => router.push("/shop")}
                 />
                 <p className="text-center w-full text-sm font-semibold">
-                  150/200
+                  {staminas}/200
                 </p>
                 <div className="stamina-item absolute top-0 -right-3 w-7 h-7">
                   <img src="/images/stamina.png" className="w-full h-full" />
@@ -70,7 +82,7 @@ const HeaderAuthen = () => {
                   onClick={() => router.push("/shop")}
                 />
                 <p className="text-center w-full text-sm font-semibold">
-                  {formatCoins(2000000)}
+                  {formatCoins(coins)}
                 </p>
                 <div className="stamina-item absolute -top-1 -right-3 w-9 h-9">
                   <img src="/images/star.png" className="w-full h-full" />
