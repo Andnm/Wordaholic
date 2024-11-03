@@ -11,24 +11,28 @@ export const item_list_home = [
     name: "Play",
     link: "play",
     key: "play",
+    active: true,
   },
   {
     icon: <FaStore className="mb-1 text-3xl" />,
     name: "Shop",
     link: "shop",
     key: "shop",
+    active: true,
   },
   {
     icon: <IoSettings className="mb-1 text-3xl" />,
     name: "Settings",
     link: "setting",
     key: "settings",
+    active: false,
   },
   {
     icon: <FaSignInAlt className="mb-1 text-3xl" />,
     name: "Logout",
     link: "",
     key: "logout",
+    active: true,
   },
 ];
 
@@ -41,7 +45,7 @@ export const play_mode_list = [
 ];
 
 export const handleActionNotSupport = () => {
-  toast.warning("Tính năng chưa hỗ trợ");
+  toast.warning("This feature is not available now!");
 };
 
 export const toastError = (error: any) => {

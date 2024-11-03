@@ -50,13 +50,15 @@ const HomePage: React.FC = () => {
                       ? "hover:text-red-600"
                       : "hover:text-green-600"
                   } flex flex-col items-center text-gray-600 transition-all duration-200 cursor-pointer`}
-                  onClick={
-                    item?.key !== "logout"
-                      ? () => router.push(`/${item.link}`)
-                      : () => {
-                          signOut();
-                        }
-                  }
+                  onClick={() => {
+                    if (!item?.active) {
+                      handleActionNotSupport();
+                    } else if (item?.key === "logout") {
+                      signOut();
+                    } else {
+                      router.push(`/${item.link}`);
+                    }
+                  }}
                 >
                   {item.icon}
                   <span className="text-sm">{item.name}</span>
