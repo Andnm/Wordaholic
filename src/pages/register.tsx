@@ -9,15 +9,17 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { MdOutlineMail } from "react-icons/md";
 import { GrSecure } from "react-icons/gr";
-import { handleActionNotSupport } from "@utils/global";
+import { handleActionNotSupport, toastError } from "@utils/global";
 import { IoPerson } from "react-icons/io5";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import customer from "@services/customer";
+import { RegisterType } from "@models/customer";
 
 const RegisterPage = () => {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [name, setName] = useState<string>("");
+  // const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
@@ -37,10 +39,11 @@ const RegisterPage = () => {
     }
   };
 
-  const handleRegister = async () => {
+  const handleRegister = async (e?: React.FormEvent<HTMLFormElement>) => {
+    if (e) e.preventDefault();
     setError("");
 
-    if (!email || !password || !name || !confirmPassword) {
+    if (!email || !password || !confirmPassword) {
       setError("Please fill in email and password input!");
       setIsLoading(false);
       return;
@@ -60,29 +63,30 @@ const RegisterPage = () => {
 
     try {
       setIsLoading(true);
+      console.log("come");
+      const data: RegisterType = {
+        email: email,
+        password: password,
+      };
 
-      // const responseRegister = await customer.registerByCustomer(
-      //   name,
-      //   email,
-      //   password
-      // );
+      const responseRegister = await customer.createAccount(data);
 
-      // if (responseRegister) {
-      //   message.success("Đăng ký thành công!", 1.5);
+      console.log("responseRegister: ", responseRegister);
 
-      //   const responseSignin = await signIn("cus_credentials", {
-      //     redirect: false,
-      //     email: email,
-      //     password: password,
-      //   });
+      message.success("Đăng ký thành công!", 1.5);
 
-      //   if (!responseSignin?.error) {
-      //     return router.push("/account");
-      //   }
-      // }
+      const responseSignin = await signIn("cus_credentials", {
+        redirect: false,
+        email: email,
+        password: password,
+      });
+
+      if (!responseSignin?.error) {
+        return router.push("/");
+      }
     } catch (err: any) {
       console.error("Error creating account:", err);
-      message.error(err!.response?.data?.message);
+      toastError(err);
     } finally {
       setIsLoading(false);
     }
@@ -116,7 +120,7 @@ const RegisterPage = () => {
         <p className="sub-title">Register</p>
 
         <form onSubmit={handleRegister} className="my-4 w-10/12">
-          <div className="input-field relative">
+          {/* <div className="input-field relative">
             <input
               type="text"
               required
@@ -126,7 +130,7 @@ const RegisterPage = () => {
               onChange={(e) => setName(e.target.value)}
             />
             <IoPerson className="absolute left-3 w-6 h-6 opacity-30" />
-          </div>
+          </div> */}
 
           <div className="input-field relative mt-6">
             <input
@@ -178,7 +182,9 @@ const RegisterPage = () => {
 
           <button
             type="submit"
-            className="my-5 btn-action-login-register text-center text-xl cursor-pointer"
+            className={`my-5 btn-action-login-register text-center text-xl cursor-pointer ${
+              isLoading ? "loading-style" : ""
+            }`}
             disabled={isLoading}
           >
             {isLoading ? "Handling..." : "Sign up"}

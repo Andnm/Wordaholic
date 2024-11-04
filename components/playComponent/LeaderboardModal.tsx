@@ -18,6 +18,8 @@ const LeaderboardModal: React.FC<Props> = (props) => {
     if (!leaderboard || !playerList) return [];
 
     return leaderboard
+      .slice()
+      .reverse()
       .map((playerId) => {
         const player = playerList.find((p) => p.user_id._id === playerId);
         return player;

@@ -6,6 +6,7 @@ const apiLinks = {
     loginWithGoogle: `${urlServerSide}/api/auth/loginGoogle`,
     getProfile: `${urlServerSide}/api/users/current`,
     getUserById: `${urlServerSide}/api/users`,
+    register: `${urlServerSide}/api/auth/register`,
   },
   room: {
     getAllRoom: `${urlServerSide}/api/rooms`,
@@ -28,8 +29,8 @@ const apiLinks = {
   tool: {
     getAllTool: `${urlServerSide}/api/tools`,
     useHint: `${urlServerSide}/api/tools/use-hint`,
-    buyItem:  `${urlServerSide}/api/tools`,
-    buyStamina:  `${urlServerSide}/api/tools/stamina`,
+    buyItem: `${urlServerSide}/api/tools`,
+    buyStamina: `${urlServerSide}/api/tools/stamina`,
   },
 };
 

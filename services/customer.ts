@@ -5,11 +5,20 @@ import {
   CustomerData,
   CusParam,
   ChangePassword,
+  RegisterType,
 } from "@models/customer";
 import { LoginResponse } from "@models/user";
 import apiLinks from "@utils/api-links";
 import { ContentTypeEnum } from "@utils/enum";
 import httpClient from "@utils/http-client";
+
+const createAccount = async (model: RegisterType): Promise<any> => {
+  const response = await httpClient.post({
+    url: `${apiLinks.customer.register}`,
+    data: model,
+  });
+  return response.data;
+};
 
 const getUserById = async (token: string, user_id: string): Promise<any> => {
   const response = await httpClient.get({
@@ -52,6 +61,7 @@ const loginWithCustomerEmail = async (
 };
 
 const customer = {
+  createAccount,
   getUserById,
   getProfileCustomer,
   loginWithGoogle,

@@ -100,8 +100,6 @@ const MultiplayerScreen: React.FC<Props> = (props) => {
           data
         );
 
-        console.log("response UPDATE TURN: ", response);
-
         if (roomInfo) {
           setMessage("");
           setCountdown(MAX_COUNTDOWN);

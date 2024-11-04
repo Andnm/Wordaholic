@@ -11,6 +11,11 @@ export interface Customer extends Base {
   gender: string;
 }
 
+export interface RegisterType {
+  email: string;
+  password: string;
+}
+
 export interface CustomerData extends PagingModel {
   data: Customer[];
 }
