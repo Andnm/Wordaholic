@@ -29,7 +29,7 @@ export interface RoomType {
   is_private: boolean;
   is_playing: boolean;
   coin_per_person: number;
-  leaderboard: any[];
+  leaderboard: string[];
   usedWords: string[];
   _id: string;
   players_in_match: PlayerInMatchType[];

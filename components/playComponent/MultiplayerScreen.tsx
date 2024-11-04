@@ -18,7 +18,7 @@ interface Props {
   roomId: string | null;
 }
 
-const MAX_COUNTDOWN = 10;
+const MAX_COUNTDOWN = 50;
 
 const MultiplayerScreen: React.FC<Props> = (props) => {
   const { roomInfo, setRoomInfo, roomId } = props;
@@ -29,92 +29,59 @@ const MultiplayerScreen: React.FC<Props> = (props) => {
   const [countdown, setCountdown] = useState<number>(MAX_COUNTDOWN);
   const [message, setMessage] = useState<string>("");
   const [isLoseModalVisible, setIsLoseModalVisible] = useState(false);
-  const [isLeaderboardVisible, setIsLeaderboardVisible] = useState(false);
-  const [leaderboard, setLeaderboard] = useState<string>("");
-  const [isPlayerLost, setIsPlayerLost] = useState(false);
+  const [hasLost, setHasLost] = useState(false);
 
   useEffect(() => {
-    if (countdown === 0 && !isPlayerLost) {
+    if (countdown === 0) {
       handleTimeOut();
     }
 
     let timer: NodeJS.Timeout;
-    if (!isPlayerLost) {
-      timer = setInterval(() => {
-        setCountdown((prev) => prev - 1);
-      }, 1000);
-    }
+
+    timer = setInterval(() => {
+      setCountdown((prev) => prev - 1);
+    }, 1000);
 
     return () => {
       if (timer) {
         clearInterval(timer);
       }
     };
-  }, [countdown, isPlayerLost]);
+  }, [countdown]);
 
   const handleTimeOut = async () => {
     if (session?.user.access_token && roomInfo) {
       try {
-        setIsLoseModalVisible(true);
-
-        const currentPlayerId = session?.user.userId;
-
-        const playerToRemove = roomInfo.players_in_match.find(
-          (player) => player.user_id._id === currentPlayerId
-        );
-
         const response = await room.removePlayerFromMatch(
           session?.user.access_token,
           roomInfo?._id
         );
-
-        if (roomInfo) {
-          //   const updatedPlayersInMatch = roomInfo.players_in_match.filter(
-          //     (player) => {
-          //       player.user_id !== session?.user.userId;
-          //     }
-          //   );
-
-          //   console.log("updatedPlayersInMatch: ", updatedPlayersInMatch)
-
-          //   const nextPlayerIndex = findNextPlayerIndex(updatedPlayersInMatch);
-          //   if (nextPlayerIndex !== -1) {
-          //     updatedPlayersInMatch[nextPlayerIndex].is_playing = true;
-          //   }
-
-          //   setRoomInfo({
-          //     ...roomInfo,
-          //     players_in_match: updatedPlayersInMatch,
-          //   });
-
-          if (
-            playerToRemove &&
-            currentPlayerId === session?.user.userId &&
-            response.players_in_match.length >= 3
-          ) {
-            setIsPlayerLost(true);
-            setIsLoseModalVisible(true);
-            setCountdown(0);
-          }
-
-          if (response.players_in_match.length < 2) {
-            setLeaderboard(response.leaderboard);
-            setIsPlayerLost(true);
-            setIsLeaderboardVisible(true);
-          }
-        }
       } catch (error) {
         console.error("Error removing player:", error);
       }
     }
   };
 
-  const findNextPlayerIndex = (players: PlayerInMatchType[]) => {
-    const currentPlayerIndex = players.findIndex((player) => player.is_playing);
-    return currentPlayerIndex === players.length - 1
-      ? 0
-      : currentPlayerIndex + 1;
-  };
+  useEffect(() => {
+    if (roomInfo && session?.user.userId) {
+      const isPlayerInMatch = roomInfo.players_in_match.some(
+        (player) => player.user_id._id === session.user.userId
+      );
+
+      if (!isPlayerInMatch && roomInfo.players_in_match.length > 2) {
+        setIsLoseModalVisible(true);
+        setHasLost(true);
+      }
+    }
+  }, [roomInfo, session?.user.userId]);
+
+  useEffect(() => {
+    if (hasLost && roomInfo) {
+      if (roomInfo.usedWords.length > 0) {
+        setCountdown(MAX_COUNTDOWN);
+      }
+    }
+  }, [hasLost, roomInfo?.usedWords.length]);
 
   const isCurrentPlayerTurn = roomInfo?.players_in_match?.some(
     (player) => player.user_id._id === session?.user.userId && player.is_playing
@@ -146,18 +113,8 @@ const MultiplayerScreen: React.FC<Props> = (props) => {
     }
   };
 
-  const getPlayerInfo = (playerId: string) => {
-    return roomInfo?.player_list.find(
-      (player) => player.user_id._id === playerId
-    );
-  };
-
   const handleLoseModalClose = () => {
     setIsLoseModalVisible(false);
-  };
-
-  const handleLeaderboardClose = () => {
-    setIsLeaderboardVisible(false);
   };
 
   useEffect(() => {
@@ -182,10 +139,7 @@ const MultiplayerScreen: React.FC<Props> = (props) => {
             .sort((a, b) => a.no - b.no)
             .map((player: PlayerInMatchType, index) => {
               return (
-                <div
-                  key={index}
-                  className="flex items-center space-x-3"
-                >
+                <div key={index} className="flex items-center space-x-3">
                   <div
                     className={`relative w-10 h-10 rounded-full overflow-hidden
                     ${
@@ -231,24 +185,6 @@ const MultiplayerScreen: React.FC<Props> = (props) => {
         <div className="text-center py-6">
           <CiFaceFrown className="text-6xl text-red-500 mb-4" />
           <p className="text-lg">Better luck next time!</p>
-        </div>
-      </Modal>
-
-      {/* leaderboard */}
-      <Modal
-        title={
-          <div className="text-center text-2xl text-yellow-500">
-            Final Results!
-          </div>
-        }
-        open={isLeaderboardVisible}
-        onCancel={handleLeaderboardClose}
-        footer={null}
-        centered
-      >
-        <div className="text-center py-6">
-          <CiTrophy className="text-6xl text-yellow-500 mb-4" />
-          <div className="whitespace-pre-line">{leaderboard}</div>
         </div>
       </Modal>
 

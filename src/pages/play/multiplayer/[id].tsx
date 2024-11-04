@@ -3,12 +3,12 @@ import useSelector from "@hooks/use-selector";
 import HeaderBack from "@layout/components/header/HeaderBack";
 import HomeLayout from "@layout/HomeLayout";
 import room from "@services/room";
-import { Avatar, Button, Descriptions, Divider, Spin } from "antd";
+import { Avatar, Button, Descriptions, Divider, Modal, Spin } from "antd";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import { FaCoins, FaKey, FaLock, FaUsers } from "react-icons/fa";
-import { CiUnlock, CiLock } from "react-icons/ci";
+import { CiUnlock, CiLock, CiTrophy } from "react-icons/ci";
 import customer from "@services/customer";
 import { generateFallbackAvatar } from "@utils/helpers";
 import { MdQrCode2 } from "react-icons/md";
@@ -17,18 +17,22 @@ import { toastError } from "@utils/global";
 import { SocketContext } from "@/pages/_app";
 import MultiplayerScreen from "@components/playComponent/MultiplayerScreen";
 import { decreaseStaminas } from "@slices/player";
+import LeaderboardModal from "@components/playComponent/LeaderboardModal";
 
 const RoomPage = () => {
   const pathName = usePathname();
   const dispatch = useDispatch();
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const socketContext = useContext(SocketContext);
 
   const [roomId, setRoomId] = useState<string | null>(null);
   const [roomInfo, setRoomInfo] = useState<RoomType | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isActionLoading, setIsActionLoading] = useState(false);
+
+  const [isLeaderboardVisible, setIsLeaderboardVisible] = useState(false);
+  const [hasLeaderboardBeenShown, setHasLeaderboardBeenShown] = useState(false);
 
   useEffect(() => {
     if (pathName) {
@@ -108,8 +112,8 @@ const RoomPage = () => {
           roomInfo._id
         );
 
-        console.log("response start: ", response);
         dispatch(decreaseStaminas(5));
+        setHasLeaderboardBeenShown(false);
       } catch (error) {
         toastError(error);
         console.error("Failed to start:", error);
@@ -141,6 +145,23 @@ const RoomPage = () => {
 
     fetchRoomInfo();
   }, [session?.user.access_token, roomId]);
+
+  //leaderboard
+  const handleLeaderboardClose = () => {
+    setIsLeaderboardVisible(false);
+  };
+
+  useEffect(() => {
+    if (
+      roomInfo?.leaderboard &&
+      roomInfo.leaderboard.length > 0 &&
+      roomInfo.players_in_match.length === 0 &&
+      !hasLeaderboardBeenShown
+    ) {
+      setIsLeaderboardVisible(true);
+      setHasLeaderboardBeenShown(true);
+    }
+  }, [roomInfo?.leaderboard, hasLeaderboardBeenShown]);
 
   return (
     <HomeLayout
@@ -299,6 +320,14 @@ const RoomPage = () => {
               roomId={roomId}
             />
           )}
+
+          {/* leaderboard */}
+          <LeaderboardModal
+            isVisible={isLeaderboardVisible}
+            onClose={handleLeaderboardClose}
+            leaderboard={roomInfo?.leaderboard}
+            playerList={roomInfo?.player_list}
+          />
         </div>
       }
     />

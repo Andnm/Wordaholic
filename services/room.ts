@@ -57,7 +57,6 @@ const joinRoomWithCode = async (
   invite_code?: string
 ): Promise<any> => {
   const url = `${apiLinks.room.joinRoomWithCode}/${invite_code}`;
-  console.log("come here");
   const response = await httpClient.get({
     url: url,
     token: token,
