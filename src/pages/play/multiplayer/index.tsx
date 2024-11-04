@@ -6,7 +6,6 @@ import HomeLayout from "@layout/HomeLayout";
 import { RoomType } from "@models/room";
 import customer from "@services/customer";
 import room from "@services/room";
-import { updateListRooms } from "@slices/room";
 import { toastError } from "@utils/global";
 import { generateFallbackAvatar } from "@utils/helpers";
 import {
@@ -14,6 +13,7 @@ import {
   Button,
   Checkbox,
   Form,
+  Input,
   Modal,
   Radio,
   Select,
@@ -29,11 +29,13 @@ const Multiplayer = () => {
   const { listRooms, isConnected, refreshRooms }: any =
     useContext(SocketContext);
 
-  console.log("listRooms socket: ", listRooms);
-
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isLoadingCreate, setIsLoadingCreate] = useState(false);
-  const [isLoadingData, setIsLoadingData] = useState(false);
+  const [inviteCode, setInviteCode] = useState("");
+  const [searchCode, setSearchCode] = useState("");
+  const [selectedRoomId, setSelectedRoomId] = useState<string>("");
+  const [isJoinModalVisible, setIsJoinModalVisible] = useState(false);
+  const [isLoadingSearch, setIsLoadingSearch] = useState<boolean>(false);
 
   const router = useRouter();
   const [form] = Form.useForm();
@@ -44,7 +46,7 @@ const Multiplayer = () => {
     setIsModalVisible(true);
   };
 
-  const handleOk = async () => {
+  const handleCreateOk = async () => {
     const values = await form.validateFields();
 
     if (session?.user.access_token) {
@@ -59,7 +61,6 @@ const Multiplayer = () => {
           }
         );
 
-        dispatch(updateListRooms([responseCreateRoom]));
         router.push(`/play/multiplayer/${responseCreateRoom._id}`);
       } catch (error) {
         console.error("Failed to create room:", error);
@@ -70,6 +71,88 @@ const Multiplayer = () => {
     }
   };
 
+  const handleJoinRoomPrivate = async () => {
+    if (!inviteCode) {
+      toastError("Please enter an invite code.");
+      return;
+    }
+    if (session?.user.access_token) {
+      try {
+        const response = await room.joinRoom(
+          session.user.access_token,
+          selectedRoomId,
+          inviteCode
+        );
+
+        console.log("response: ", response);
+        router.push(`/play/multiplayer/${selectedRoomId}`);
+      } catch (error) {
+        toastError("Failed to join room. Please check your invite code.");
+        toastError(error);
+        console.error("Failed to join room:", error);
+      } finally {
+        setInviteCode("");
+        setIsJoinModalVisible(false);
+      }
+    }
+  };
+
+  const handleJoinRoomImmediately = async (roomId: string) => {
+    if (session?.user.access_token) {
+      try {
+        const response = await room.joinRoom(session.user.access_token, roomId);
+        router.push(`/play/multiplayer/${roomId}`);
+      } catch (error) {
+        toastError(error);
+        console.error("Failed to join room:", error);
+      }
+    }
+  };
+
+  const handleJoinRoomWithCode = async () => {
+    if (session?.user.access_token) {
+      setIsLoadingSearch(true);
+      try {
+        const response = await room.joinRoomWithCode(
+          session.user.access_token,
+          searchCode
+        );
+
+        console.log("response: ", response);
+        router.push(`/play/multiplayer/${response._id}`);
+      } catch (error) {
+        toastError(error);
+        console.error("Failed to join room:", error);
+      } finally {
+        setIsLoadingSearch(false);
+      }
+    }
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchCode) {
+      handleJoinRoomWithCode();
+    }
+  };
+
+  const handleKeyPressSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSearch(e);
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleJoinRoomPrivate();
+    }
+  };
+
+  const openJoinModal = (roomId: string) => {
+    setSelectedRoomId(roomId);
+    setIsJoinModalVisible(true);
+  };
+
   return (
     <HomeLayout
       content={
@@ -77,8 +160,13 @@ const Multiplayer = () => {
           <HeaderBack namePage="Multiplayer" link="/play" />
 
           <div className="search-container flex flex-row items-center justify-center gap-7 w-full container">
-            <form className="form shadow-xl">
-              <button>
+            <form
+              className="form shadow-xl"
+              onSubmit={(e) => {
+                handleSearch(e);
+              }}
+            >
+              <button className="cursor-pointer">
                 <svg
                   width="17"
                   height="16"
@@ -100,8 +188,17 @@ const Multiplayer = () => {
                 className="input"
                 placeholder="Enter invite code"
                 type="text"
+                value={searchCode}
+                onChange={(e) => setSearchCode(e.target.value)}
+                onKeyPress={handleKeyPressSearch}
               />
-              <button className="reset" type="reset">
+              <button
+                className="reset cursor-pointer"
+                type="reset"
+                onClick={() => {
+                  setSearchCode("");
+                }}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6"
@@ -119,35 +216,48 @@ const Multiplayer = () => {
               </button>
             </form>
 
-            <button className="button-create" onClick={handleCreateClick}>
-              <span>
-                <svg
-                  height="24"
-                  width="24"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M0 0h24v24H0z" fill="none"></path>
-                  <path
-                    d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z"
-                    fill="currentColor"
-                  ></path>
-                </svg>
-                Create
-              </span>
-            </button>
+            {isLoadingSearch ? (
+              <Spin/>
+            ) : (
+              <button className="button-create" onClick={handleCreateClick}>
+                <span>
+                  <svg
+                    height="24"
+                    width="24"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                      d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z"
+                      fill="currentColor"
+                    ></path>
+                  </svg>
+                  Create
+                </span>
+              </button>
+            )}
           </div>
 
-          {isLoadingData ? (
-            <div className="flex justify-center items-center w-full">
-              <Spin />
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 container gap-7">
-              {listRooms.map((room: RoomType, index) => (
+          <div className="grid grid-cols-2 container gap-7">
+            {listRooms.length === 0 ? (
+              <div className="col-span-2 text-center p-5">
+                <p className="text-lg font-semibold">
+                  Không có room nào tồn tại
+                </p>
+              </div>
+            ) : (
+              listRooms.map((room: RoomType, index) => (
                 <div
                   key={index}
-                  className="bg-white shadow-md rounded-lg p-5 relative cursor-pointer hover:scale-105 transition-all duration-300 relative"
+                  className="bg-white shadow-md rounded-lg p-5 relative cursor-pointer hover:scale-105 transition-all duration-300"
+                  onClick={() => {
+                    if (!room?.is_private) {
+                      handleJoinRoomImmediately(room._id);
+                    } else {
+                      openJoinModal(room._id);
+                    }
+                  }}
                 >
                   <div style={{ display: "flex", alignItems: "center" }}>
                     <Avatar
@@ -180,6 +290,14 @@ const Multiplayer = () => {
                       </div>
                     </div>
 
+                    <p
+                      className={`font-semibold ${
+                        room.is_playing ? "text-green-500" : "text-gray-500"
+                      }`}
+                    >
+                      {room.is_playing ? "Playing" : "Waiting"}
+                    </p>
+
                     <div
                       className="flex flex-row items-center justify-between relative h-7 w-28 shadow-md rounded-lg"
                       style={{ backgroundColor: "#FEF7E6" }}
@@ -202,9 +320,9 @@ const Multiplayer = () => {
                     <CiUnlock className="w-5 h-5 absolute top-5 right-5" />
                   )}
                 </div>
-              ))}
-            </div>
-          )}
+              ))
+            )}
+          </div>
 
           <Modal
             title="Create Room"
@@ -217,7 +335,7 @@ const Multiplayer = () => {
                 <Spin />
               </div>
             ) : (
-              <Form form={form} layout="horizontal" onFinish={handleOk}>
+              <Form form={form} layout="horizontal" onFinish={handleCreateOk}>
                 <Form.Item
                   label="Max Players"
                   name="max_players"
@@ -260,6 +378,28 @@ const Multiplayer = () => {
                 </Form.Item>
               </Form>
             )}
+          </Modal>
+
+          <Modal
+            title="Join Room"
+            open={isJoinModalVisible}
+            onCancel={() => setIsJoinModalVisible(false)}
+            footer={null}
+          >
+            <Form layout="vertical" onFinish={handleJoinRoomPrivate}>
+              <Form.Item label="Invite Code" required>
+                <Input
+                  value={inviteCode}
+                  onChange={(e) => setInviteCode(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                />
+              </Form.Item>
+              <Form.Item>
+                <Button type="primary" htmlType="submit">
+                  Confirm
+                </Button>
+              </Form.Item>
+            </Form>
           </Modal>
         </div>
       }

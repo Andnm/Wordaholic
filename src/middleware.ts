@@ -12,74 +12,40 @@ export async function middleware(req: NextRequest) {
     secret: process.env.NEXTAUTH_SECRET,
   })) as any;
 
+  const checkToken = () => {
+    return (
+      !token ||
+      isExpiredTimeToken(token.loginDate, token.expiresIn) ||
+      isExpiredTimeTokenSecondHandle(token.iat, token.exp)
+    );
+  };
+
   switch (pathname) {
     case "/login":
-      if (
-        token
-        //XEM LẠI BUG CHỖ NÀY SAU
-        // &&
-        // (isExpiredTimeToken(token.loginDate, token.expiresIn) ||
-        //   isExpiredTimeTokenSecondHandle(token.iat, token.exp))
-      )
-        return NextResponse.redirect(`${origin}`);
-      break;
     case "/register":
-      if (
-        token
-        //XEM LẠI BUG CHỖ NÀY SAU
-        // &&
-        // (isExpiredTimeToken(token.loginDate, token.expiresIn) ||
-        //   isExpiredTimeTokenSecondHandle(token.iat, token.exp))
-      )
+      if (token) {
         return NextResponse.redirect(`${origin}`);
+      }
       break;
     case "/":
-      if (
-        !token ||
-        isExpiredTimeToken(token.loginDate, token.expiresIn) ||
-        isExpiredTimeTokenSecondHandle(token.iat, token.exp)
-      ) {
-        return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/login`);
-      }
     case "/play":
-      if (
-        !token ||
-        isExpiredTimeToken(token.loginDate, token.expiresIn) ||
-        isExpiredTimeTokenSecondHandle(token.iat, token.exp)
-      ) {
-        return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/login`);
-      }
-    case "/play/multiplayer":
-      if (
-        !token ||
-        isExpiredTimeToken(token.loginDate, token.expiresIn) ||
-        isExpiredTimeTokenSecondHandle(token.iat, token.exp)
-      ) {
-        return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/login`);
-      }
-    case `/play/multiplayer/[id]`:
-      if (
-        !token ||
-        isExpiredTimeToken(token.loginDate, token.expiresIn) ||
-        isExpiredTimeTokenSecondHandle(token.iat, token.exp)
-      ) {
-        return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/login`);
-      }
-    case "/play/playwithbot":
-      if (
-        !token ||
-        isExpiredTimeToken(token.loginDate, token.expiresIn) ||
-        isExpiredTimeTokenSecondHandle(token.iat, token.exp)
-      ) {
-        return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/login`);
-      }
     case "/shop":
-      if (
-        !token ||
-        isExpiredTimeToken(token.loginDate, token.expiresIn) ||
-        isExpiredTimeTokenSecondHandle(token.iat, token.exp)
-      ) {
+      if (checkToken()) {
         return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/login`);
       }
+      break;
+    case `/play/multiplayer`:
+    case `/play/playwithbot`:
+      if (checkToken()) {
+        return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/login`);
+      }
+      break;
+    default:
+      if (pathname.startsWith("/play/multiplayer/")) {
+        if (checkToken()) {
+          return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/login`);
+        }
+      }
+      break;
   }
 }

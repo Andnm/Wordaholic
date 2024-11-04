@@ -39,10 +39,27 @@ const createRoom = async (
 const joinRoom = async (
   token: string,
   room_id: string,
-  invite_code: string
+  invite_code?: string
 ): Promise<any> => {
+  const url = invite_code
+    ? `${apiLinks.room.joinRoom}/${room_id}/${invite_code}`
+    : `${apiLinks.room.joinRoom}/${room_id}`;
+
   const response = await httpClient.get({
-    url: `${apiLinks.room.joinRoom}/${room_id}/${invite_code}`,
+    url: url,
+    token: token,
+  });
+  return response.data;
+};
+
+const joinRoomWithCode = async (
+  token: string,
+  invite_code?: string
+): Promise<any> => {
+  const url = `${apiLinks.room.joinRoomWithCode}/${invite_code}`;
+  console.log("come here");
+  const response = await httpClient.get({
+    url: url,
     token: token,
   });
   return response.data;
@@ -70,21 +87,19 @@ const kickPlayer = async (
 
 const changeReadyStatus = async (
   token: string,
-  params: BaseRoom
+  room_id: string
 ): Promise<any> => {
   const response = await httpClient.get({
-    url: `${apiLinks.room.changeReadyStatus}`,
+    url: `${apiLinks.room.changeReadyStatus}/${room_id}`,
     token: token,
-    params: params,
   });
   return response.data;
 };
 
-const startGame = async (token: string, params: BaseRoom): Promise<any> => {
+const startGame = async (token: string, room_id: string): Promise<any> => {
   const response = await httpClient.get({
-    url: `${apiLinks.room.startGame}`,
+    url: `${apiLinks.room.startGame}/${room_id}`,
     token: token,
-    params: params,
   });
   return response.data;
 };
@@ -121,11 +136,23 @@ const playTurnWithBot = async (
   return response.data;
 };
 
+const removePlayerFromMatch = async (
+  token: string,
+  room_id: string
+): Promise<any> => {
+  const response = await httpClient.get({
+    url: `${apiLinks.room.removePlayerFromMatch}/${room_id}`,
+    token: token,
+  });
+  return response.data;
+};
+
 const room = {
   getAllRoom,
   getRoomById,
   createRoom,
   joinRoom,
+  joinRoomWithCode,
   leaveRoom,
   kickPlayer,
   changeReadyStatus,
@@ -133,6 +160,7 @@ const room = {
   playTurnWithPlayer,
   startWithBot,
   playTurnWithBot,
+  removePlayerFromMatch,
 };
 
 export default room;

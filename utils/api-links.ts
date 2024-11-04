@@ -12,6 +12,7 @@ const apiLinks = {
     getRoomById: `${urlServerSide}/api/rooms`,
     createRoom: `${urlServerSide}/api/rooms/create-room`,
     joinRoom: `${urlServerSide}/api/rooms/join-room`,
+    joinRoomWithCode: `${urlServerSide}/api/rooms/join-room-with-code`,
     leaveRoom: `${urlServerSide}/api/rooms/leave-room`,
     kickPlayer: `${urlServerSide}/api/rooms/kick-player`,
     changeReadyStatus: `${urlServerSide}/api/rooms/change-ready-status`,
@@ -19,6 +20,7 @@ const apiLinks = {
     playTurnWithPlayer: `${urlServerSide}/api/rooms/play-turn-with-player`,
     startWithBot: `${urlServerSide}/api/rooms/start-with-bot`,
     playTurnWithBot: `${urlServerSide}/api/rooms/play-turn-with-bot`,
+    removePlayerFromMatch: `${urlServerSide}/api/rooms/remove-player-from-match`,
   },
   transaction: {
     createPayOsUrl: `${urlServerSide}/api/transactions/payOs-url`,

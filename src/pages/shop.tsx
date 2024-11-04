@@ -118,7 +118,7 @@ const ShopPage = () => {
                   item.amount_money
                 );
                 console.log(result);
-                // window.location.href = result.paymentUrl;
+                window.location.href = result.paymentUrl;
 
                 break;
             }

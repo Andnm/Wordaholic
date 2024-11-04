@@ -28,13 +28,20 @@ export interface RoomType {
   leaderboard: any[];
   usedWords: string[];
   _id: string;
-  players_in_match: any[];
+  players_in_match: PlayerInMatchType[];
+  current_word?: string;
 }
 
 export interface PlayerType {
   _id: UserType;
   user_id: UserType;
   is_ready: boolean;
+}
+
+export interface PlayerInMatchType {
+  is_playing: boolean;
+  no: number;
+  user_id: UserType;
 }
 
 export interface UserType {

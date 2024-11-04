@@ -7,6 +7,7 @@ let socket: Socket;
 export const useSocket = () => {
   const [listRooms, setListRooms] = useState([]);
   const [isConnected, setIsConnected] = useState(false);
+  const [isSocketLoading, setIsSocketLoading] = useState(true); 
 
   useEffect(() => {
     socket = io(`${urlServerSide}` || "http://localhost:3001", {
@@ -16,13 +17,17 @@ export const useSocket = () => {
 
     socket.on("connect", () => {
       setIsConnected(true);
-
+      // console.log("socket connected!");
       socket.emit("get_list_rooms");
     });
 
     socket.on("list_rooms", (rooms) => {
-      console.log("rooms: ", rooms);
+      // console.log("rooms: ",rooms)
       setListRooms(rooms);
+    });
+
+    socket.on(`room-6728a2caa8b72ce1234b1ab4`, (updatedRoom) => {
+      console.log("updatedRoom socket: ", updatedRoom);
     });
 
     socket.on("disconnect", () => {

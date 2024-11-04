@@ -1,4 +1,4 @@
-import { Socket } from 'socket.io-client';
+import { Socket } from "socket.io-client";
 
 export interface Room {
   id: string;
@@ -6,6 +6,7 @@ export interface Room {
 }
 
 export interface SocketContextType {
+  socket: Socket<any, any> | null;
   listRooms: any;
   isConnected: boolean;
   refreshRooms: () => void;

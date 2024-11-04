@@ -26,7 +26,7 @@ const HeaderBack: React.FC<Props> = (props) => {
           className="cursor-pointer w-10 h-10"
           onClick={handleBackClick}
         />
-        <p className="capitalize text-2xl font-bold text-center">{namePage}</p>
+        <div className="capitalize text-2xl font-bold text-center">{namePage}</div>
       </div>
     </div>
   );

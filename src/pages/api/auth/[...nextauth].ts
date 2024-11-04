@@ -6,7 +6,6 @@ import customer from "@services/customer";
 import { jwtDecode } from "jwt-decode";
 import { ROLE_ADMIN, ROLE_CUSTOMER } from "@utils/constants";
 
-
 export default NextAuth({
   providers: [
     GoogleProvider({
@@ -28,15 +27,14 @@ export default NextAuth({
         result = await customer.loginWithCustomerEmail(email, password);
         if (result) {
           const decodedToken = jwtDecode<any>(result.accessToken);
-          console.log("decodedToken: ", decodedToken);
 
           const user = {
-            id: result.userId,
+            id: decodedToken?.user?.id,
             name: decodedToken?.user?.fullname,
             access_token: result.accessToken,
             expiresIn: result.expiresIn,
             loginDate: moment().format(),
-            userId: result.userId,
+            userId: decodedToken?.user?.id,
             userName: result.userName,
             tokenType: result.tokenType,
             email: decodedToken?.user.email,
@@ -76,8 +74,10 @@ export default NextAuth({
 
         try {
           const result = await customer.loginWithGoogle(googleAccessToken);
+          const decodedToken = jwtDecode<any>(result.accessToken);
 
           token.access_token = result.accessToken;
+          token.userId = decodedToken?.user?.id;
         } catch (err) {
           console.log("err: ", err);
         }
@@ -87,6 +87,7 @@ export default NextAuth({
     },
     async session({ session, token, user }) {
       // console.log("token in session: ", token);
+      // console.log("user in session: ", user);
       if (session) {
         session.expires = moment(token.loginDate)
           .add(token.expiresIn, "seconds")
