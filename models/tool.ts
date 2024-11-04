@@ -3,4 +3,17 @@ export interface BuyItem {
   quantity: number;
 }
 
-export type BuyStamina = Omit<BuyItem, 'item_id'>;
+export type BuyStamina = Omit<BuyItem, "item_id">;
+
+export interface ItemType {
+  _id: string;
+  item_name: string;
+  price: string;
+  type: string;
+  description: string;
+}
+
+export interface ToolType {
+  item_id: ItemType;
+  quantity: number;
+}
