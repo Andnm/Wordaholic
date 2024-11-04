@@ -122,7 +122,6 @@ const MultiplayerScreen: React.FC<Props> = (props) => {
 
     socketContext.socket.on(`room-${roomId}`, (updatedRoom: RoomType) => {
       setRoomInfo(updatedRoom);
-      console.log("updatedRoom socket: ", updatedRoom);
     });
 
     return () => {

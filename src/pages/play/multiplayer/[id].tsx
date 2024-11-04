@@ -47,7 +47,6 @@ const RoomPage = () => {
 
     socketContext.socket.on(`room-${roomId}`, (updatedRoom: RoomType) => {
       setRoomInfo(updatedRoom);
-      console.log("updatedRoom socket: ", updatedRoom);
     });
 
     return () => {
@@ -133,7 +132,6 @@ const RoomPage = () => {
             session?.user.access_token,
             roomId
           );
-          console.log("responseGetRoomInfo: ", responseGetRoomInfo);
           setRoomInfo(responseGetRoomInfo);
         } catch (error) {
           toastError(error);

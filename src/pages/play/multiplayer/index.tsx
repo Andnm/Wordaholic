@@ -28,7 +28,7 @@ import { FaUsers } from "react-icons/fa";
 const Multiplayer = () => {
   const { listRooms, isConnected, refreshRooms }: any =
     useContext(SocketContext);
-
+    
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isLoadingCreate, setIsLoadingCreate] = useState(false);
   const [inviteCode, setInviteCode] = useState("");
@@ -88,7 +88,6 @@ const Multiplayer = () => {
           params
         );
 
-        console.log("response: ", response);
         router.push(`/play/multiplayer/${selectedRoomId}`);
       } catch (error) {
         toastError("Failed to join room. Please check your invite code.");
@@ -131,7 +130,6 @@ const Multiplayer = () => {
           searchCode
         );
 
-        console.log("response: ", response);
         router.push(`/play/multiplayer/${response._id}`);
       } catch (error) {
         toastError(error);
