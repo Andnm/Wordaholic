@@ -18,8 +18,8 @@ export interface UpdatePlayBotTurn {
 }
 
 export interface RoomType {
-  host_id: string;
-  player_list: PlayerList[];
+  host_id: UserType;
+  player_list: PlayerType[];
   invite_code: string;
   max_players: number;
   is_private: boolean;
@@ -31,7 +31,17 @@ export interface RoomType {
   players_in_match: any[];
 }
 
-export interface PlayerList {
-  user_id: string;
+export interface PlayerType {
+  _id: UserType;
+  user_id: UserType;
   is_ready: boolean;
+}
+
+export interface UserType {
+  _id: string;
+  avatar: string;
+  stamina: number;
+  coin: number;
+  fullname: string;
+  email: string;
 }

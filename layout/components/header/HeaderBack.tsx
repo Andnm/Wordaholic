@@ -3,7 +3,7 @@ import React from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
 
 interface Props {
-  namePage: string;
+  namePage: any;
   link?: string;
   actionLeaveRoom?: () => Promise<void>;
 }

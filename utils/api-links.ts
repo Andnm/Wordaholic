@@ -8,6 +8,8 @@ const apiLinks = {
     getUserById: `${urlServerSide}/api/users`,
   },
   room: {
+    getAllRoom: `${urlServerSide}/api/rooms`,
+    getRoomById: `${urlServerSide}/api/rooms`,
     createRoom: `${urlServerSide}/api/rooms/create-room`,
     joinRoom: `${urlServerSide}/api/rooms/join-room`,
     leaveRoom: `${urlServerSide}/api/rooms/leave-room`,

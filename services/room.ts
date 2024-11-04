@@ -8,6 +8,22 @@ import apiLinks from "@utils/api-links";
 import { ContentTypeEnum } from "@utils/enum";
 import httpClient from "@utils/http-client";
 
+const getAllRoom = async (token: string): Promise<any> => {
+  const response = await httpClient.get({
+    url: `${apiLinks.room.getAllRoom}`,
+    token: token,
+  });
+  return response.data;
+};
+
+const getRoomById = async (token: string, room_id: string): Promise<any> => {
+  const response = await httpClient.get({
+    url: `${apiLinks.room.getRoomById}/${room_id}`,
+    token: token,
+  });
+  return response.data;
+};
+
 const createRoom = async (
   token: string,
   model: CreateRoomModel
@@ -106,6 +122,8 @@ const playTurnWithBot = async (
 };
 
 const room = {
+  getAllRoom,
+  getRoomById,
   createRoom,
   joinRoom,
   leaveRoom,

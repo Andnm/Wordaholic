@@ -16,13 +16,22 @@ import store from "@store/index";
 import { ConfigProvider } from "antd";
 import { Inter } from "next/font/google";
 import { useEffect } from "react";
+import { createContext } from "react";
+import { useSocket } from "@hooks/use-socket";
+import { SocketContextType } from "@/types/socket";
+
 const inter = Inter({ subsets: ["latin"] });
 
 let persistor = persistStore(store);
+
+export const SocketContext = createContext<SocketContextType | null>(null);
+
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps) {
+  const socketData = useSocket();
+
   useEffect(() => {
     document.title = "Wordaholic";
   }, []);
@@ -55,13 +64,15 @@ export default function App({
         />
         {/* Same as */}
         <Provider store={store}>
-          {/* <PersistGate persistor={persistor} loading={null}> */}
-          <div className={inter.className}>
-            <div className="container-background background-light-green min-h-screen">
-              <Component {...pageProps} />
+          <SocketContext.Provider value={socketData}>
+            {/* <PersistGate persistor={persistor} loading={null}> */}
+            <div className={inter.className}>
+              <div className="container-background background-light-green min-h-screen">
+                <Component {...pageProps} />
+              </div>
             </div>
-          </div>
-          {/* </PersistGate> */}
+            {/* </PersistGate> */}
+          </SocketContext.Provider>
         </Provider>
       </SessionProvider>
     </ConfigProvider>
