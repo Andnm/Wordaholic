@@ -18,12 +18,13 @@ import { SocketContext } from "@/pages/_app";
 import MultiplayerScreen from "@components/playComponent/MultiplayerScreen";
 import { decreaseStaminas } from "@slices/player";
 import LeaderboardModal from "@components/playComponent/LeaderboardModal";
+import { updateCoins, updateStaminas } from "@slices/player";
 
 const RoomPage = () => {
   const pathName = usePathname();
   const dispatch = useDispatch();
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const socketContext = useContext(SocketContext);
 
   const [roomId, setRoomId] = useState<string | null>(null);
@@ -53,6 +54,27 @@ const RoomPage = () => {
       socketContext.socket!.off(`room-${roomId}`);
     };
   }, [socketContext?.socket, roomId]);
+
+  useEffect(() => {
+    if (
+      status === "authenticated" &&
+      socketContext?.socket &&
+      session?.user.userId
+    ) {
+      socketContext.socket.on(
+        `user_info-${session.user.userId}`,
+        (updatedUser: UserType) => {
+          console.log("updatedUser socket: ", updatedUser);
+          dispatch(updateCoins(updatedUser.coin));
+          dispatch(updateStaminas(updatedUser.stamina));
+        }
+      );
+
+      return () => {
+        socketContext.socket!.off(`user_info-${session.user.userId}`);
+      };
+    }
+  }, [socketContext?.socket, session?.user.userId, status]);
 
   const handleLeaveRoom = async () => {
     if (roomInfo && session?.user.access_token) {
