@@ -3,7 +3,7 @@ import useDispatch from "@hooks/use-dispatch";
 import useSelector from "@hooks/use-selector";
 import HeaderBack from "@layout/components/header/HeaderBack";
 import HomeLayout from "@layout/HomeLayout";
-import { RoomType } from "@models/room";
+import { ParamInviteCode, RoomType } from "@models/room";
 import customer from "@services/customer";
 import room from "@services/room";
 import { toastError } from "@utils/global";
@@ -78,10 +78,14 @@ const Multiplayer = () => {
     }
     if (session?.user.access_token) {
       try {
+        const params: ParamInviteCode = {
+          invite_code: inviteCode,
+        };
+        
         const response = await room.joinRoom(
           session.user.access_token,
           selectedRoomId,
-          inviteCode
+          params
         );
 
         console.log("response: ", response);
@@ -100,7 +104,16 @@ const Multiplayer = () => {
   const handleJoinRoomImmediately = async (roomId: string) => {
     if (session?.user.access_token) {
       try {
-        const response = await room.joinRoom(session.user.access_token, roomId);
+        const params: ParamInviteCode = {
+          invite_code: "",
+        };
+
+        const response = await room.joinRoom(
+          session.user.access_token,
+          roomId,
+          params
+        );
+
         router.push(`/play/multiplayer/${roomId}`);
       } catch (error) {
         toastError(error);
@@ -217,7 +230,7 @@ const Multiplayer = () => {
             </form>
 
             {isLoadingSearch ? (
-              <Spin/>
+              <Spin />
             ) : (
               <button className="button-create" onClick={handleCreateClick}>
                 <span>

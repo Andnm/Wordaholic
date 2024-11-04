@@ -2,6 +2,10 @@ export interface BaseRoom {
   room_id: string;
 }
 
+export interface ParamInviteCode {
+  invite_code: string;
+}
+
 export interface CreateRoomModel {
   max_players: number;
   is_private: boolean;

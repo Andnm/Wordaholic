@@ -3,6 +3,7 @@ import {
   CreateRoomModel,
   UpdatePlayerTurn,
   UpdatePlayBotTurn,
+  ParamInviteCode,
 } from "@models/room";
 import apiLinks from "@utils/api-links";
 import { ContentTypeEnum } from "@utils/enum";
@@ -39,15 +40,14 @@ const createRoom = async (
 const joinRoom = async (
   token: string,
   room_id: string,
-  invite_code?: string
+  param: ParamInviteCode
 ): Promise<any> => {
-  const url = invite_code
-    ? `${apiLinks.room.joinRoom}/${room_id}/${invite_code}`
-    : `${apiLinks.room.joinRoom}/${room_id}`;
+  const url = `${apiLinks.room.joinRoom}/${room_id}`;
 
   const response = await httpClient.get({
     url: url,
     token: token,
+    params: param,
   });
   return response.data;
 };
