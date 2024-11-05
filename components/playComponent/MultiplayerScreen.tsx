@@ -22,7 +22,7 @@ interface Props {
   roomId: string | null;
 }
 
-const MAX_COUNTDOWN = 1000000;
+const MAX_COUNTDOWN = 50;
 
 const MultiplayerScreen: React.FC<Props> = (props) => {
   const { roomInfo, setRoomInfo, roomId } = props;
