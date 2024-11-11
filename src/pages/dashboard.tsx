@@ -2,10 +2,7 @@
 
 import GoalsChart from "@components/dashboardChart/GoalsChart";
 import RevenueChart from "@components/dashboardChart/RevenueChart";
-import TopServices from "@components/dashboardChart/TopServices";
 import VisitorsChart from "@components/dashboardChart/VisitorsChart";
-import VolumeServiceLevel from "@components/dashboardChart/VolumeServiceLevel";
-import WorldMap from "@components/dashboardChart/WorldMap";
 import { signOut, useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
