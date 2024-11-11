@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 import "@/styles/header.scss";
+import "@/styles/dashboard.scss";
 import "@/styles/authen.scss";
 import "@/styles/play.scss";
 import "react-toastify/dist/ReactToastify.css";
@@ -67,9 +68,7 @@ export default function App({
           <SocketContext.Provider value={socketData}>
             {/* <PersistGate persistor={persistor} loading={null}> */}
             <div className={inter.className}>
-              <div className="container-background background-light-green min-h-screen">
                 <Component {...pageProps} />
-              </div>
             </div>
             {/* </PersistGate> */}
           </SocketContext.Provider>

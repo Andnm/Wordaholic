@@ -11,11 +11,13 @@ interface Props {
 
 const HomeLayout: React.FC<Props> = (props) => {
   const { content } = props;
-  
+
   return (
-    <div className="min-h-screen">
-      <HeaderAuthen />
-      {content}
+    <div className="container-background background-light-green min-h-screen">
+      <div className="min-h-screen">
+        <HeaderAuthen />
+        {content}
+      </div>
     </div>
   );
 };

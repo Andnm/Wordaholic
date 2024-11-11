@@ -1,6 +1,16 @@
 import moment from "moment";
 import dayjs from "dayjs";
 
+
+export const areInArray = (arr: any, ...elements: any[]) => {
+  for (let element of elements) {
+    if (arr?.includes(element)) {
+      return true;
+    }
+  }
+  return false;
+};
+
 export const isExpiredTimeToken = (loginDate: string, exp: number): boolean => {
   const tokenExpiredTime = moment(loginDate).add(exp, "minute").toDate();
   const currentDate = moment().toDate();
@@ -86,4 +96,11 @@ export const formatTime = (seconds) => {
   const minutes = Math.floor(seconds / 60);
   const secs = seconds % 60;
   return `${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+};
+
+export const formatToTwoDecimalPlaces = (num: number | null | undefined) => {
+  if (num == null || isNaN(num)) {
+    return 0;
+  }
+  return Number.isInteger(num) ? num.toString() : num.toFixed(2);
 };

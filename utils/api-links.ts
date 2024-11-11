@@ -32,6 +32,11 @@ const apiLinks = {
     buyItem: `${urlServerSide}/api/tools`,
     buyStamina: `${urlServerSide}/api/tools/stamina`,
   },
+  statistics: {
+    statisticSale: `${urlServerSide}/api/transactions/admin/statistic-sales`,
+    revenueMonthly: `${urlServerSide}/api/transactions/admin/statistic-revenue-monthly`,
+    revenueCurrentWeek: `${urlServerSide}/api/transactions/admin/statistic-revenue-current-week`,
+  },
 };
 
 export default apiLinks;

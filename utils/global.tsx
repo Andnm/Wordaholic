@@ -4,6 +4,26 @@ import { toast } from "react-toastify";
 import { ROLE_ADMIN } from "./constants";
 import { FaGamepad, FaStore, FaSignInAlt, FaCogs } from "react-icons/fa";
 import { IoSettings } from "react-icons/io5";
+import { AiOutlineDashboard } from "react-icons/ai";
+import { ReactNode } from "react";
+
+export interface SliderMenuItem {
+  key: string;
+  icon: ReactNode;
+  label: string;
+  roles: string[];
+}
+
+export const sliderMenu = [
+  {
+    key: "/dashboard",
+    icon: <AiOutlineDashboard />,
+    label: "Dashboard",
+    roles: [ROLE_ADMIN],
+  }
+
+] as SliderMenuItem[];
+
 
 export const item_list_home = [
   {

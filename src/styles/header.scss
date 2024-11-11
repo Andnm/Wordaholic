@@ -13,3 +13,22 @@
     transition: 0.3s ease-in-out;
   }
 }
+
+.btn-logout {
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  padding: 10px 15px;
+  border-radius: 15px;
+  color: #737791;
+
+  .icon {
+    color: #737791;
+  }
+}
+
+.break-line {
+  width: 1.5px;
+  height: 30px;
+  background-color: #8d8d8d;
+  opacity: 0.5;
+}

@@ -11,8 +11,11 @@ import { MdOutlineMail } from "react-icons/md";
 import { GrSecure } from "react-icons/gr";
 import { handleActionNotSupport } from "@utils/global";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import useDispatch from "@hooks/use-dispatch";
+import { setSliderMenuItemSelectedKey } from "@slices/global";
 
 const LoginPage = () => {
+  const dispatch = useDispatch();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
@@ -61,7 +64,13 @@ const LoginPage = () => {
         return message.error("Wrong login information!", 1.5);
       } else {
         message.success("Đăng nhập thành công!", 1.5);
-        return router.push("/");
+
+        if (email.includes("admin")) {
+          dispatch(setSliderMenuItemSelectedKey("/dashboard"));
+          router.push("/dashboard");
+        } else {
+          return router.push("/");
+        }
       }
     } catch (error) {
       setError("An error occurred during login.");
@@ -89,7 +98,7 @@ const LoginPage = () => {
   ];
 
   return (
-    <div className="container min-h-screen flex items-center justify-center">
+    <div className="container container-background background-light-green min-h-screen flex items-center justify-center">
       <div className="container login-container flex flex-col items-center justify-center">
         <h1 className="text-center text-4xl font-extrabold">wordaholic</h1>
         <div className="my-5">
@@ -153,7 +162,8 @@ const LoginPage = () => {
             style={{ color: "#FF8682" }}
             className="hover:underline cursor-pointer"
           >
-            {" "}Sign up
+            {" "}
+            Sign up
           </span>
         </p>
         <div className="line-text font-medium my-7 ">
