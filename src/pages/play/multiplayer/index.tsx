@@ -164,6 +164,24 @@ const Multiplayer = () => {
     setIsJoinModalVisible(true);
   };
 
+  useEffect(() => {
+    const fetchTools = async () => {
+      if (session?.user.access_token ) {
+        try {
+          const responseUserInRoom = await room.checkUserInRoom(
+            session?.user.access_token
+          );
+
+          router.push(`/play/multiplayer/${responseUserInRoom._id}`);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+
+    fetchTools();
+  }, [session?.user.access_token]);
+
   return (
     <HomeLayout
       content={

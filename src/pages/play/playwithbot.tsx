@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import InputSendMessage from "../../../components/playComponent/InputSendMessage";
 import room from "@services/room";
 import { useSession } from "next-auth/react";
-import { UpdatePlayBotTurn } from "@models/room";
+import { MeaningWord, UpdatePlayBotTurn } from "@models/room";
 import { useRouter } from "next/navigation";
 import { Button, Modal, Spin } from "antd";
 import { toastError } from "@utils/global";
@@ -14,6 +14,7 @@ import useDispatch from "@hooks/use-dispatch";
 import { decreaseStaminas, increaseStaminas } from "@slices/player";
 import useSelector from "@hooks/use-selector";
 import { formatTime } from "@utils/helpers";
+import { AiOutlineSound } from "react-icons/ai";
 
 const MAX_COUNTDOWN = 30;
 
@@ -29,7 +30,9 @@ const Playwithbot = () => {
   const [countdown, setCountdown] = useState<number>(MAX_COUNTDOWN);
   const [gameActive, setGameActive] = useState<boolean>(false);
   const [usedWords, setUsedWords] = useState<string[]>([]);
+  const [meaningWords, setMeaningWords] = useState<MeaningWord[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoadingMeaning, setIsLoadingMeaning] = useState<boolean>(false);
 
   const handleSendMessage = async () => {
     if (message.trim() && gameActive) {
@@ -38,8 +41,6 @@ const Playwithbot = () => {
         word: message.toLocaleLowerCase()!,
       };
 
-      console.log("data: ", data);
-
       if (session?.user.access_token) {
         try {
           const response = await room.playTurnWithBot(
@@ -47,7 +48,6 @@ const Playwithbot = () => {
             data
           );
 
-          console.log("response bot: ", response);
           setUsedWords(response.usedWords);
           setBotWord(response.newWord);
           setMessage("");
@@ -74,6 +74,7 @@ const Playwithbot = () => {
         setMessage("");
         setUsedWords([response.word]);
         setBotWord(response.word);
+
         setGameActive(true);
         setCountdown(MAX_COUNTDOWN);
       } catch (error) {
@@ -103,6 +104,26 @@ const Playwithbot = () => {
     }
   }, [countdown, gameActive]);
 
+  useEffect(() => {
+    const fetchMeaning = async () => {
+      setIsLoadingMeaning(true);
+
+      if (botWord) {
+        try {
+          const responseMeaningWord = await room.getMeaningWord(botWord);
+
+          setMeaningWords(responseMeaningWord);
+        } catch (error) {
+          toastError(error);
+        } finally {
+          setIsLoadingMeaning(false);
+        }
+      }
+    };
+
+    fetchMeaning();
+  }, [botWord]);
+
   return (
     <HomeLayout
       content={
@@ -115,6 +136,62 @@ const Playwithbot = () => {
                 <h3 className="text-center">{formatTime(countdown)}</h3>
               </div>
               <h2 className="text-4xl">{botWord}</h2>
+
+              {meaningWords.length > 0 && !isLoadingMeaning && (
+                <div className="meaning-container max-w-96 flex flex-col gap-4  justify-center">
+                  {meaningWords.map((meaningWord, index) => (
+                    <div key={index} className="meaning-item">
+                      <div className="phonetic flex items-center justify-center gap-2">
+                        {meaningWord.phonetic && (
+                          <>
+                            <p className="text-center text-lg font-light">
+                              {meaningWord.phonetic}
+                            </p>
+                            {meaningWord.phonetics.length > 0 &&
+                              meaningWord.phonetics[0].audio &&
+                              meaningWord.phonetics[0].audio !== "" && (
+                                <button
+                                  className={`voice-button hover:shadow-lg bg-white`}
+                                  onClick={() => {
+                                    const audio = new Audio(
+                                      meaningWord.phonetics[0].audio
+                                    );
+                                    audio.play();
+                                  }}
+                                >
+                                  <AiOutlineSound className="w-5 h-5 text-black" />{" "}
+                                </button>
+                              )}
+                          </>
+                        )}
+                      </div>
+
+                      {meaningWord.meanings.map((meaning, idx) => (
+                        <div key={idx} className="part-of-speech">
+                          <strong className="capitalize text-base">
+                            {meaning.partOfSpeech}
+                          </strong>
+                          <div className="definitions">
+                            {meaning.definitions.length > 0 && (
+                              <p className="text-base text-justify">
+                                {meaning.definitions[0].definition}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {isLoadingMeaning && (
+                <div className="flex items-center">
+                  <Spin size="small" style={{ marginRight: 8 }} />
+                  <span className="">Taking meaning...</span>
+                </div>
+              )}
+
               <div></div>
               <div></div>
               <div></div>

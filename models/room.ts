@@ -56,3 +56,24 @@ export interface UserType {
   fullname: string;
   email: string;
 }
+
+
+export interface Definition {
+  definition: string;
+}
+
+export interface Meaning {
+  partOfSpeech: string;
+  definitions: Definition[];
+}
+
+export interface PhoneticItem {
+  text: string;
+  audio: string;
+}
+
+export interface MeaningWord {
+  meanings: Meaning[];
+  phonetic: string;
+  phonetics: PhoneticItem[];
+}

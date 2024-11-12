@@ -22,6 +22,7 @@ const apiLinks = {
     startWithBot: `${urlServerSide}/api/rooms/start-with-bot`,
     playTurnWithBot: `${urlServerSide}/api/rooms/play-turn-with-bot`,
     removePlayerFromMatch: `${urlServerSide}/api/rooms/remove-player-from-match`,
+    checkUserInRoom: `${urlServerSide}/api/rooms/check-user-in-room`,
   },
   transaction: {
     createPayOsUrl: `${urlServerSide}/api/transactions/payOs-url`,

@@ -1,11 +1,16 @@
 "use client";
 
-import { PlayerInMatchType, RoomType, UpdatePlayerTurn } from "@models/room";
+import {
+  MeaningWord,
+  PlayerInMatchType,
+  RoomType,
+  UpdatePlayerTurn,
+} from "@models/room";
 import { formatTime, generateFallbackAvatar } from "@utils/helpers";
 import React, { useContext, useEffect, useState } from "react";
 import InputSendMessage from "./InputSendMessage";
 import Image from "next/image";
-import { Modal } from "antd";
+import { Modal, Spin } from "antd";
 import { CiFaceFrown } from "react-icons/ci";
 import { useSession } from "next-auth/react";
 import room from "@services/room";
@@ -15,6 +20,7 @@ import tool from "@services/tool";
 import { ToolType } from "@models/tool";
 import { toast } from "react-toastify";
 import { HiOutlineLightBulb } from "react-icons/hi";
+import { AiOutlineSound } from "react-icons/ai";
 
 interface Props {
   roomInfo: RoomType | null;
@@ -36,6 +42,9 @@ const MultiplayerScreen: React.FC<Props> = (props) => {
   const [hasLost, setHasLost] = useState(false);
 
   const [listTools, setListTools] = useState<ToolType[] | null>(null);
+
+  const [meaningWords, setMeaningWords] = useState<MeaningWord[]>([]);
+  const [isLoadingMeaning, setIsLoadingMeaning] = useState<boolean>(false);
 
   useEffect(() => {
     if (countdown === 0) {
@@ -142,7 +151,6 @@ const MultiplayerScreen: React.FC<Props> = (props) => {
             session?.user.access_token
           );
 
-          console.log("responseGetTools: ", responseGetTools);
           setListTools(responseGetTools);
         } catch (error) {
           toastError(error);
@@ -177,10 +185,32 @@ const MultiplayerScreen: React.FC<Props> = (props) => {
     }
   };
 
+  useEffect(() => {
+    const fetchMeaning = async () => {
+      setIsLoadingMeaning(true);
+
+      if (roomInfo?.current_word) {
+        try {
+          const responseMeaningWord = await room.getMeaningWord(
+            roomInfo.current_word
+          );
+
+          setMeaningWords(responseMeaningWord);
+        } catch (error) {
+          toastError(error);
+        } finally {
+          setIsLoadingMeaning(false);
+        }
+      }
+    };
+
+    fetchMeaning();
+  }, [roomInfo?.current_word]);
+
   return (
     <div className="mode-container relative container flex justify-between items-center flex-col">
       <div className="absolute left-0 top-10 bg-white p-4 rounded-lg shadow-md">
-        <h3 className="mb-4 text-lg font-bold">Player Order</h3>
+        <h3 className="mb-4 text-lg font-bold">Player</h3>
         <div className="space-y-4">
           {roomInfo?.players_in_match
             .sort((a, b) => a.no - b.no)
@@ -205,14 +235,7 @@ const MultiplayerScreen: React.FC<Props> = (props) => {
                       objectFit="cover"
                     />
                   </div>
-                  <span
-                    className={`
-                    ${player.is_playing ? "" : "opacity-20"}`}
-                  >
-                    {player?.user_id.fullname ||
-                      player?.user_id.email ||
-                      "Unknown Player"}
-                  </span>
+                 
                 </div>
               );
             })}
@@ -240,6 +263,60 @@ const MultiplayerScreen: React.FC<Props> = (props) => {
           <h3 className="text-center">{formatTime(countdown)}</h3>
         </div>
         <h2 className="text-4xl">{roomInfo?.current_word}</h2>
+        {meaningWords.length > 0 && !isLoadingMeaning && (
+          <div className="meaning-container max-w-96 flex flex-col gap-4  justify-center">
+            {meaningWords.map((meaningWord, index) => (
+              <div key={index} className="meaning-item">
+                <div className="phonetic flex items-center justify-center gap-2">
+                  {meaningWord.phonetic && (
+                    <>
+                      <p className="text-center text-lg font-light">
+                        {meaningWord.phonetic}
+                      </p>
+                      {meaningWord.phonetics.length > 0 &&
+                        meaningWord.phonetics[0].audio &&
+                        meaningWord.phonetics[0].audio !== "" && (
+                          <button
+                            className={`voice-button hover:shadow-lg bg-white`}
+                            onClick={() => {
+                              const audio = new Audio(
+                                meaningWord.phonetics[0].audio
+                              );
+                              audio.play();
+                            }}
+                          >
+                            <AiOutlineSound className="w-5 h-5 text-black" />{" "}
+                          </button>
+                        )}
+                    </>
+                  )}
+                </div>
+
+                {meaningWord.meanings.map((meaning, idx) => (
+                  <div key={idx} className="part-of-speech">
+                    <strong className="capitalize text-base">
+                      {meaning.partOfSpeech}
+                    </strong>
+                    <div className="definitions">
+                      {meaning.definitions.length > 0 && (
+                        <p className="text-base text-justify">
+                          {meaning.definitions[0].definition}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {isLoadingMeaning && (
+          <div className="flex items-center">
+            <Spin size="small" style={{ marginRight: 8 }} />
+            <span className="">Taking meaning...</span>
+          </div>
+        )}
         <div></div>
         <div></div>
         <div></div>

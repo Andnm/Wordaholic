@@ -64,7 +64,6 @@ const RoomPage = () => {
       socketContext.socket.on(
         `user_info-${session.user.userId}`,
         (updatedUser: UserType) => {
-          console.log("updatedUser socket: ", updatedUser);
           dispatch(updateCoins(updatedUser.coin));
           dispatch(updateStaminas(updatedUser.stamina));
         }
@@ -80,8 +79,6 @@ const RoomPage = () => {
     if (roomInfo && session?.user.access_token) {
       try {
         await room.leaveRoom(session.user.access_token, roomInfo._id);
-
-        router.push("/play/multiplayer");
       } catch (error) {
         console.error("Failed to leave room:", error);
       }

@@ -4,6 +4,7 @@ import {
   UpdatePlayerTurn,
   UpdatePlayBotTurn,
   ParamInviteCode,
+  MeaningWord,
 } from "@models/room";
 import apiLinks from "@utils/api-links";
 import { ContentTypeEnum } from "@utils/enum";
@@ -12,6 +13,14 @@ import httpClient from "@utils/http-client";
 const getAllRoom = async (token: string): Promise<any> => {
   const response = await httpClient.get({
     url: `${apiLinks.room.getAllRoom}`,
+    token: token,
+  });
+  return response.data;
+};
+
+const checkUserInRoom = async (token: string): Promise<any> => {
+  const response = await httpClient.get({
+    url: `${apiLinks.room.checkUserInRoom}`,
     token: token,
   });
   return response.data;
@@ -146,6 +155,13 @@ const removePlayerFromMatch = async (
   return response.data;
 };
 
+const getMeaningWord = async (currentWord: string): Promise<MeaningWord[]> => {
+  const response = await httpClient.get({
+    url: `https://api.dictionaryapi.dev/api/v2/entries/en/${currentWord}`,
+  });
+  return response.data;
+};
+
 const room = {
   getAllRoom,
   getRoomById,
@@ -160,6 +176,8 @@ const room = {
   startWithBot,
   playTurnWithBot,
   removePlayerFromMatch,
+  checkUserInRoom,
+  getMeaningWord,
 };
 
 export default room;
