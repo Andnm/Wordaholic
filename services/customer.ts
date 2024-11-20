@@ -36,6 +36,14 @@ const getProfileCustomer = async (token: string): Promise<any> => {
   return response.data;
 };
 
+const getAllAccountByAdmin = async (token: string): Promise<any> => {
+  const response = await httpClient.get({
+    url: `${apiLinks.customer.getAllAccountByAdmin}`,
+    token: token,
+  });
+  return response.data;
+};
+
 const loginWithGoogle = async (token: string): Promise<any> => {
   const response = await httpClient.post({
     url: `${apiLinks.customer.loginWithGoogle}`,
@@ -61,6 +69,7 @@ const loginWithCustomerEmail = async (
 };
 
 const customer = {
+  getAllAccountByAdmin,
   createAccount,
   getUserById,
   getProfileCustomer,

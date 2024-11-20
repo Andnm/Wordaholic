@@ -7,6 +7,7 @@ const apiLinks = {
     getProfile: `${urlServerSide}/api/users/current`,
     getUserById: `${urlServerSide}/api/users`,
     register: `${urlServerSide}/api/auth/register`,
+    getAllAccountByAdmin: `${urlServerSide}/api/users`,
   },
   room: {
     getAllRoom: `${urlServerSide}/api/rooms`,

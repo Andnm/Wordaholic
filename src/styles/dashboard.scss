@@ -171,3 +171,38 @@ $primary-color: #4caf50;
     border-radius: 12px;
   }
 }
+
+.slider-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--light-gray) !important;
+  min-height: 86vh;
+
+  .ant-layout-sider-children {
+    width: fit-content;
+
+    .ant-menu {
+      background-color: var(--light-gray) !important;
+      border-inline-end: none !important;
+
+      .ant-menu-item {
+        border-radius: 15px;
+
+        .ant-menu-title-content {
+          text-overflow: unset !important;
+        }
+      }
+
+      .ant-menu-item-selected {
+        background-color: var(--semi-dark-green) !important;
+        color: white;
+      }
+
+      .ant-menu-item:hover {
+        background-color: var(--medium-green) !important;
+        color: white;
+      }
+    }
+  }
+}

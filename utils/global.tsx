@@ -3,7 +3,7 @@
 import { toast } from "react-toastify";
 import { ROLE_ADMIN } from "./constants";
 import { FaGamepad, FaStore, FaSignInAlt, FaCogs } from "react-icons/fa";
-import { IoSettings } from "react-icons/io5";
+import { IoPersonCircleOutline, IoSettings } from "react-icons/io5";
 import { AiOutlineDashboard } from "react-icons/ai";
 import { ReactNode } from "react";
 
@@ -16,14 +16,18 @@ export interface SliderMenuItem {
 
 export const sliderMenu = [
   {
-    key: "/dashboard",
+    key: "dashboard",
     icon: <AiOutlineDashboard />,
     label: "Dashboard",
     roles: [ROLE_ADMIN],
-  }
-
+  },
+  {
+    key: "user",
+    icon: <IoPersonCircleOutline />,
+    label: "Người dùng",
+    roles: [ROLE_ADMIN],
+  },
 ] as SliderMenuItem[];
-
 
 export const item_list_home = [
   {

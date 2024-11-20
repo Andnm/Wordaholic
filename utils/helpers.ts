@@ -104,3 +104,14 @@ export const formatToTwoDecimalPlaces = (num: number | null | undefined) => {
   }
   return Number.isInteger(num) ? num.toString() : num.toFixed(2);
 };
+
+export const getAccountStatusVietNamese = (status: boolean): string => {
+  switch (status) {
+    case true:
+      return "Đã bị ban";
+    case false:
+      return "Đang hoạt động";
+    default:
+      return "Không xác định";
+  }
+};

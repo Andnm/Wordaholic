@@ -65,3 +65,12 @@ export interface ChangePassword {
   currentPassword: string;
   newPassword: string;
 }
+
+export interface CustomerType {
+  _id: string;
+  fullname: string;
+  email: string;
+  avatar: string;
+  status: boolean;
+  createdAt: string;
+}

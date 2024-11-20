@@ -94,6 +94,13 @@ video {
 }
 
 :root {
+  --dark-green: #003e3e;
+  --semi-dark-green: #004c4c;
+  --medium-green: #7ba486;
+  --normal-green: #188f05;
+  --light-yellow: #fbf4e2;
+  --dark-blue: #011632;
+  --light-gray: #f5f5f5;
   --light-green: #dcfce7;
 }
 
