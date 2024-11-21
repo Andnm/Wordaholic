@@ -2,6 +2,13 @@ export interface DataSaleType {
   income: Income;
   courses: Courses;
   newUsers: NewUsers;
+  transaction: Transaction;
+}
+
+export interface Transaction {
+  differencePercent: number;
+  totalTransactionCurrent: number;
+  totalTransactionPrevious: number;
 }
 
 export interface Income {
@@ -22,9 +29,6 @@ export interface NewUsers {
   differencePercent: number;
 }
 
-
 export interface RevenueWeekType {
-  dayOfWeekRevenue: number[]
+  dayOfWeekRevenue: number[];
 }
-
-

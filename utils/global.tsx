@@ -3,9 +3,14 @@
 import { toast } from "react-toastify";
 import { ROLE_ADMIN } from "./constants";
 import { FaGamepad, FaStore, FaSignInAlt, FaCogs } from "react-icons/fa";
-import { IoPersonCircleOutline, IoSettings } from "react-icons/io5";
+import {
+  IoCartOutline,
+  IoPersonCircleOutline,
+  IoSettings,
+} from "react-icons/io5";
 import { AiOutlineDashboard } from "react-icons/ai";
 import { ReactNode } from "react";
+import { GrTransaction } from "react-icons/gr";
 
 export interface SliderMenuItem {
   key: string;
@@ -25,6 +30,12 @@ export const sliderMenu = [
     key: "user",
     icon: <IoPersonCircleOutline />,
     label: "Người dùng",
+    roles: [ROLE_ADMIN],
+  },
+  {
+    key: "transaction",
+    icon: <GrTransaction />,
+    label: "Giao dịch",
     roles: [ROLE_ADMIN],
   },
 ] as SliderMenuItem[];

@@ -8,6 +8,7 @@ const apiLinks = {
     getUserById: `${urlServerSide}/api/users`,
     register: `${urlServerSide}/api/auth/register`,
     getAllAccountByAdmin: `${urlServerSide}/api/users`,
+    addCoinToUser: `${urlServerSide}/api/users/addCoinToUser`,
   },
   room: {
     getAllRoom: `${urlServerSide}/api/rooms`,
@@ -27,6 +28,8 @@ const apiLinks = {
   },
   transaction: {
     createPayOsUrl: `${urlServerSide}/api/transactions/payOs-url`,
+    getAllTransactionsByAdmin: `${urlServerSide}/api/transactions`,
+
   },
   tool: {
     getAllTool: `${urlServerSide}/api/tools`,

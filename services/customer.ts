@@ -36,6 +36,14 @@ const getProfileCustomer = async (token: string): Promise<any> => {
   return response.data;
 };
 
+const addCoinToUser = async (token: string): Promise<any> => {
+  const response = await httpClient.get({
+    url: `${apiLinks.customer.addCoinToUser}`,
+    token: token,
+  });
+  return response.data;
+};
+
 const getAllAccountByAdmin = async (token: string): Promise<any> => {
   const response = await httpClient.get({
     url: `${apiLinks.customer.getAllAccountByAdmin}`,
@@ -69,6 +77,7 @@ const loginWithCustomerEmail = async (
 };
 
 const customer = {
+  addCoinToUser,
   getAllAccountByAdmin,
   createAccount,
   getUserById,

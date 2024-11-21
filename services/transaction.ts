@@ -14,8 +14,17 @@ const createPayOsUrl = async (token: string, amount: number): Promise<any> => {
   return response.data;
 };
 
+const getAllTransactionsByAdmin = async (token: string): Promise<any> => {
+  const response = await httpClient.get({
+    url: `${apiLinks.transaction.getAllTransactionsByAdmin}`,
+    token: token,
+  });
+  return response.data;
+};
+
 const transaction = {
   createPayOsUrl,
+  getAllTransactionsByAdmin,
 };
 
 export default transaction;

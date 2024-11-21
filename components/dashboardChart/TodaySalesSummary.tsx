@@ -2,11 +2,16 @@
 
 import { handleActionNotSupport } from "@utils/global";
 import { Spin } from "antd";
-import { AiOutlineBarChart, AiFillTag } from "react-icons/ai";
+import {
+  AiOutlineBarChart,
+  AiFillTag,
+  AiOutlineTransaction,
+} from "react-icons/ai";
 import { BsFillPersonPlusFill } from "react-icons/bs";
 import { PiExport } from "react-icons/pi";
 import { formatToTwoDecimalPlaces } from "../../utils/helpers";
 import { DataSaleType } from "@models/statistic";
+import { GrTransaction } from "react-icons/gr";
 
 interface Props {
   statisticSale: DataSaleType;
@@ -30,6 +35,16 @@ const TodaySalesSummary: React.FC<Props> = (props) => {
       label: "Tổng doanh số",
       scale: formatToTwoDecimalPlaces(statisticSale?.income.differencePercent),
       backGroundColor: "#ffe2e6",
+    },
+    {
+      icon: <AiOutlineTransaction size={24} color="white" />,
+      iconBackGroundColor: "#3cd856",
+      value: statisticSale?.transaction.totalTransactionCurrent.toString(),
+      label: "Giao dịch phát sinh",
+      scale: formatToTwoDecimalPlaces(
+        statisticSale?.transaction.differencePercent
+      ),
+      backGroundColor: "#dcfce7",
     },
     {
       icon: <BsFillPersonPlusFill size={24} color="white" />,
