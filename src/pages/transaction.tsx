@@ -3,12 +3,13 @@
 import SearchFilterHeader from "@components/manager/SearchFilterHeader";
 import { CustomerType } from "@models/customer";
 import transaction from "@services/transaction";
-import { formatNumberWithCommas } from "@utils/helpers";
-import { Spin, Table, Button } from "antd";
+import { formatNumberWithCommas, generateFallbackAvatar } from "@utils/helpers";
+import { Spin, Table, Button, Avatar } from "antd";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import dayjs from "dayjs";
 
 const ManagerLayoutNoSSR = dynamic(() => import("@layout/ManagerLayout"), {
   ssr: false,
@@ -16,7 +17,7 @@ const ManagerLayoutNoSSR = dynamic(() => import("@layout/ManagerLayout"), {
 
 export interface TransactionType {
   _id: string;
-  user_id: string | CustomerType;
+  user_id: CustomerType;
   payment_type: string;
   amount: number;
   status: string;
@@ -38,25 +39,29 @@ const columns = [
     title: "Người mua",
     dataIndex: ["user_id", "fullname"],
     key: "user_fullname",
+    render: (text: string, record: TransactionType) => (
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <Avatar
+          src={
+            record.user_id.avatar ||
+            generateFallbackAvatar(record.user_id.email)
+          }
+          alt={record.user_id.email}
+          style={{ marginRight: "8px", border: "1px solid #d9d9d9" }}
+          size={55}
+        />
+        <div>
+          <div className="text-base">{record.user_id.fullname}</div>
+          <div className="opacity-70">{record.user_id.email}</div>
+        </div>
+      </div>
+    ),
   },
   {
-    title: "Ngày mua",
+    title: "Thời điểm giao dịch",
     dataIndex: "createdAt",
     key: "createdAt",
-    render: (text: string) => new Date(text).toLocaleString(),
-  },
-  {
-    title: "Phương thức thanh toán",
-    dataIndex: "payment_type",
-    key: "payment_type",
-    width: "150px",
-    render: (paymentType: string) => {
-      return paymentType === "Stripe"
-        ? "Visa"
-        : paymentType === "AccountBalance"
-        ? "Ví cá nhân"
-        : paymentType;
-    },
+    render: (text: string) => dayjs(text).format("DD/MM/YYYY, hh:mm:ss A"),
   },
   {
     title: "Trạng thái",

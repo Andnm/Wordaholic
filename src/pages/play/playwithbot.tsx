@@ -11,10 +11,15 @@ import { Button, Modal, Spin } from "antd";
 import { toastError } from "@utils/global";
 import HeaderBack from "@layout/components/header/HeaderBack";
 import useDispatch from "@hooks/use-dispatch";
-import { decreaseStaminas, increaseStaminas } from "@slices/player";
+import {
+  decreaseStaminas,
+  increaseStaminas,
+  updateCoins,
+} from "@slices/player";
 import useSelector from "@hooks/use-selector";
 import { formatTime } from "@utils/helpers";
 import { AiOutlineSound } from "react-icons/ai";
+import customer from "@services/customer";
 
 const MAX_COUNTDOWN = 30;
 
@@ -23,6 +28,7 @@ const Playwithbot = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
+  const coins = useSelector((state) => state.player.coins);
   const staminas = useSelector((state) => state.player.staminas);
 
   const [message, setMessage] = useState<string>("");
@@ -92,6 +98,26 @@ const Playwithbot = () => {
       }, 1000);
       return () => clearInterval(timer);
     } else if (countdown === 0 && gameActive) {
+      const fetchCustomers = async () => {
+        if (session?.user.access_token) {
+          setIsLoading(true);
+          try {
+            const responseAddCoinToUser = await customer.addCoinToUser(
+              session.user.access_token
+            );
+
+            dispatch(updateCoins(coins + 5));
+          } catch (error: any) {
+            toastError(error);
+            console.error("Có lỗi khi tải dữ liệu:", error);
+          } finally {
+            setIsLoading(false);
+          }
+        }
+      };
+
+      fetchCustomers();
+
       Modal.confirm({
         title: "YOU LOSE!",
         content: "Do you want to play again?",

@@ -19,6 +19,7 @@ import { toast } from "react-toastify";
 import { MdBlock } from "react-icons/md";
 import { FiTrash2 } from "react-icons/fi";
 import { handleActionNotSupport } from "@utils/global";
+import dayjs from "dayjs";
 
 const columns: TableProps<any>["columns"] = [
   {
@@ -77,7 +78,7 @@ const columns: TableProps<any>["columns"] = [
     title: "Ngày tham gia",
     dataIndex: "createdAt",
     key: "createdAt",
-    render: (text: string) => new Date(text).toLocaleString(),
+    render: (text: string) => dayjs(text).format("DD/MM/YYYY, hh:mm:ss A"),
   },
 ];
 

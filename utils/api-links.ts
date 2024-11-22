@@ -28,7 +28,7 @@ const apiLinks = {
   },
   transaction: {
     createPayOsUrl: `${urlServerSide}/api/transactions/payOs-url`,
-    getAllTransactionsByAdmin: `${urlServerSide}/api/transactions`,
+    getAllTransactionsByAdmin: `${urlServerSide}/api/transactions/admin`,
 
   },
   tool: {
