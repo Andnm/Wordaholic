@@ -151,11 +151,16 @@ const Transaction = () => {
     let updatedData = [...originalData];
 
     if (searchText) {
-      updatedData = updatedData.filter((transaction: any) =>
-        transaction.user_id.fullname
-          .toLowerCase()
-          .includes(searchText.toLowerCase())
-      );
+      updatedData = updatedData.filter((transaction: any) => {
+        return (
+          transaction?.user_id?.email
+            .toLowerCase()
+            .includes(searchText.toLowerCase()) ||
+          String(transaction.transaction_code)
+            .toLowerCase()
+            .includes(searchText.toLowerCase())
+        );
+      });
     }
 
     if (paymentFilter) {
@@ -186,7 +191,7 @@ const Transaction = () => {
         <div>
           <div className="header-order">
             <SearchFilterHeader
-              searchPlaceholder="Tìm kiếm người mua"
+              searchPlaceholder="Tìm kiếm mã giao dịch, email người mua"
               searchValue={searchText}
               onSearchChange={setSearchText}
               haveFilter={true}
